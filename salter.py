@@ -22,9 +22,65 @@ def date():
 
 
 
+def room():
+    '''Asks user what room they want to reserve'''
+    room_request = input('What room would you like to reserve? ')
+    if room_request == '1':
+        beds = '1 full'
+        occupency = 2
+        cost = 77
+        name = 'Sea Oat Sweet'
+
+    elif room_request =='2':
+        beds = '2 full'
+        occupency = 4
+        cost = 85
+        name = 'Shipwreck Sweet'
+
+    elif room_request == '3':
+        beds = '2 full'
+        occupency = 4
+        cost = 85
+        name = 'Shady Oak Sweet'
+
+    elif room_request == '4':
+        beds = '1 queen'
+        occupency = 2
+        cost = 97
+        name = 'Sunset Sweet'
+
+    elif room_request == '5':
+        beds = '1 queen'
+        occupency = 2
+        cost = 97
+        name = 'Shelling Sweet'
+
+    elif room_request == '6':
+        beds = '1 queen'
+        occupency = 2
+        cost = 97
+        name = 'Skipper Sweet'
+
+    elif room_request == '7':
+        beds = '1 queen'
+        occupency = 2
+        cost = 97
+        name = 'Salt Marsh'
+
+    elif room_request == '8'
+        beds = '1 king 1 queen'
+        occupency = 4
+        cost = 129
+        name = 'Captains Quarters Apartment'
+
+    else:
+        return 'Invalid room number'
 
 
-def main():
+
+
+
+ main():
     """
     Main entry point for the program.
     """
