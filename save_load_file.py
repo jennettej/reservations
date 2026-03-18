@@ -1,26 +1,27 @@
-import json
-import os
+import json #import everything
+import os #https://www.w3schools.com/python/python_file_remove.asp
 
 def getInput():
-	try:
-	  os.remove("reservations.json") #https://www.w3schools.com/python/python_file_remove.asp
+  '''getInput: gets a bunch of inputs from the user and writes them to a file'''
+	try: #if a file already exists
+	  os.remove("reservations.json")  #delete it
 	  print("File exists, deleting...")
-	except:
+	except: #if not, do nothing
 	  print("No file exists, creating...")
-	f = open("reservations.json","x")
-	v1 = input("Name here: ")
+	f = open("reservations.json","x") #make a new file
+	v1 = input("Name here: ") #get a list of inputs
 	v2 = input("Arrival date here: ")
 	v3 = input("Stay length here: ")
 	v4 = input("Guest number here: ")
-	x = {
+	x = {#arrange them into a dictionary
 	  "name": v1,
 	  "date": v2,
 	  "length": v3,
 	  "guests": v4
 	}
-	y = json.dumps(x)
+	y = json.dumps(x) #convert the dictionary to json format
 	print(y)
-	f.write(y)
-	f.close()
+	f.write(y) #write the json to the file
+	f.close() #close the file
 
 getInput()
