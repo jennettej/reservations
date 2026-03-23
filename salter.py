@@ -1,6 +1,6 @@
 #from datetime import datetime
 
-
+#Ready to commit
 """
 SENG 201 - Term Project
 Starter Script
