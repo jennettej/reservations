@@ -27,11 +27,13 @@ def date():
 def room():
     '''Asks user what room they want to reserve'''
     room_request = input('What room would you like to reserve?(1-8)  ')
+    
     if room_request == '1':
         beds = '1 full'
         occupency = 2
         cost = 77
         name = 'Sea Oat Sweet'
+
         return cost
     elif room_request =='2':
         beds = '2 full'
@@ -84,19 +86,26 @@ def room():
 
 
 def main():
+
     """
     Main entry point for the program.
     """
-    checkin, checkout, stay = date()
-    print(checkin)
-    print(checkout)
-    cost = (room() * stay)
-    print(f'${cost}')
-    
+    reservations = 0
+    proceed = ''
+    while proceed != 'N':
+        checkin, checkout, stay = date()
+        print(checkin)
+        print(checkout)
+        cost = (room() * stay)
+        print(f'${cost}')
+        reservations += 1
+        print(reservations)
+        proceed = input('Do you wish to proceed? (Press any button to continue, or N to stop) ') 
 
     # TODO: Implement program logic here
     pass
 
 
 if __name__ == "__main__":
+    
     main()
