@@ -3,7 +3,12 @@ SENG 201 - Term Project
 Starter Script
 
 Description:
-    TODO: Describe what this program/module is supposed to do.
+    This program serves as the welcome menus to the reservation system.
+    Including:
+        Housekeeping menu
+        Hotel Management menu
+        Clerk Services menu
+
 """
 import os
 
