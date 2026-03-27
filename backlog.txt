@@ -1,43 +1,35 @@
-JJ: 
-As a system user, I want a menu to choose appropriate options.
-Priority: Low
+Persona: Front Desk Clerk
+HIGH PRIORITY
+As a front desk clerk, I want to enter a new reservation so that I can book a room for a guest.
+As a front desk clerk, I want to check out (close) a reservation so that rooms become available for future guests.
+As a front desk clerk, I want to search for a reservation by guest name so that I can quickly retrieve booking details.
+As a front desk clerk, I want to view all current reservations so that I can manage today’s arrivals and departures.
+MEDIUM PRIORITY
+As a front desk clerk, I want to modify an existing reservation so that I can update guest details or stay dates.
+As a front desk clerk, I want to assign a room to a reservation so that guests know where they are staying.
+LOW PRIORITY
+As a front desk clerk, I want to print or email a reservation confirmation so that guests have a copy of their booking.
+As a front desk clerk, I want to view guest history so that I can provide better service.
 
-JJ: 
-The system needs a standard method of handling date functions (date-add, date-diff, etc)
-Priority: High
+Persona: Hotel Manager
+HIGH PRIORITY
+As a hotel manager, I want to view room availability in real time so that I can make informed decisions about bookings.
+As a hotel manager, I want to generate a daily occupancy report so that I can monitor hotel performance.
+MEDIUM PRIORITY
+As a hotel manager, I want to view a list of all reservations so that I can oversee booking activity.
+As a hotel manager, I want to filter reservations by date so that I can analyze trends over time.
+As a hotel manager, I want to view housekeeping status reports so that I can ensure rooms are maintained properly.
+LOW PRIORITY
+As a hotel manager, I want to generate monthly revenue reports so that I can track financial performance.
+As a hotel manager, I want to manage room pricing so that I can adjust rates based on demand.
 
-JJ:
-The system needs methods to read in the resevration file and write out the reservation file. It needs to be easy, flexible, and callable from everywhere.
-Priority: Medium
-
-AD:
-
-
-RG:
-
-
-DH:
-
-
-DK:
-
-
-NK:
-
-
-ML:
-
-
-JM:
-
-
-WM:
-
-
-MP:
-
-
-JR:
-
-
-BS:
+Persona: Housekeeping Staff
+HIGH PRIORITY
+As a housekeeping staff member, I want to see which rooms are occupied or vacant so that I know which rooms to clean.
+As a housekeeping staff member, I want to update a room’s status (clean/dirty) so that the front desk has accurate room information.
+MEDIUM PRIORITY
+As a housekeeping staff member, I want to see a prioritized cleaning list so that I can clean rooms efficiently.
+As a housekeeping staff member, I want to mark rooms as “in progress” so that others know cleaning is underway.
+LOW PRIORITY
+As a housekeeping staff member, I want to leave notes on room conditions so that issues can be tracked.
+As a housekeeping staff member, I want to report maintenance issues so that they can be fixed promptly.
