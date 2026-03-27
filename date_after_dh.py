@@ -2,7 +2,7 @@
 # Started by David Holladay on March 18th, 2026
 import datetime
 
-def date_after(start_date: str, duration_days: int):
+def date_after(start_date: str, duration_days: int) -> datetime.date:
     '''
 Takes a string input as a date, format MM/DD/YYYY, and the number of days, as a int. Returns datetime object
     '''
