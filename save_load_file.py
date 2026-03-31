@@ -2,7 +2,7 @@ import json #import everything
 import os #https://www.w3schools.com/python/python_file_remove.asp
 
 def getInput():
-  '''getInput: gets a bunch of inputs from the user and writes them to a file'''
+	'''getInput: gets a bunch of inputs from the user and writes them to a file'''
 	try: #if a file already exists
 	  os.remove("reservations.json")  #delete it
 	  print("File exists, deleting...")
