@@ -1,7 +1,7 @@
 #if reservations.json exists (use "try"):                    | try:
-#       read from it                                         |        something involving "open" function, idk how to handle it within the same folder though
-#							     |        then res = f1.readline()
-#       open the list file                                   |	      again, "open" the list file
+#       read from it                                         |        f1 = open("reservations.json", "r")
+#							     |        res = f1.readlines()
+#       open the list file                                   |	      f2 = open("list.txt", "a")
 #       write it to a new line in that file ("\n")           |        f2.write(res)
 #       close the file (duplicate check can wait for later)  |	      f1.close(), f2.close()
 #else:                                                       | except:
