@@ -10,9 +10,11 @@ Description:
 
 
 """
-avail = ['1', '2', '3', '4', '5', '6', '7', '8']
+avail = {'1': 'available', '2': 'available', '3': 'available', '4': 'available', '5': 'available', '6': 'available', '7': 'available', '8': 'available'}
 checkin_object = ''
 checkout_object = ''
+
+
 def date():
     '''Asks user what day you want your reservation to be on'''
     checkin = input('Please enter your check in date (MM/DD/YYYY): ')
@@ -21,6 +23,7 @@ def date():
     #checkin_object = datetime.strptime(checkin, '%m/%d/%Y')
     #checkout_object = datetime.strptime(checkout, '%m/%d/%Y')
     return checkin, checkout, stay
+
 
 
 
@@ -34,53 +37,80 @@ def room():
         cost = 77
         name = 'Sea Oat Sweet'
 
+        avail['1'] = 'unavailable'
+
         return cost
     elif room_request =='2':
         beds = '2 full'
         occupency = 4
         cost = 85
         name = 'Shipwreck Sweet'
+
+        avail['2'] = 'unavailable' 
+
         return cost
     elif room_request == '3':
         beds = '2 full'
         occupency = 4
         cost = 85
         name = 'Shady Oak Sweet'
+
+        avail['3'] = 'unavailable' 
+
         return cost
     elif room_request == '4':
         beds = '1 queen'
         occupency = 2
         cost = 97
         name = 'Sunset Sweet'
+
+        avail['4'] = 'unavailable'
+
         return cost
     elif room_request == '5':
         beds = '1 queen'
         occupency = 2
         cost = 97
         name = 'Shelling Sweet'
+
+        avail['5'] = 'unavailable' 
+
         return cost
     elif room_request == '6':
         beds = '1 queen'
         occupency = 2
         cost = 97
         name = 'Skipper Sweet'
+
+        avail['6'] = 'unavailable'
+
         return cost
     elif room_request == '7':
         beds = '1 queen'
         occupency = 2
         cost = 97
         name = 'Salt Marsh'
+
+        avail['7'] = 'unavailable' 
+
         return cost
     elif room_request == '8':
         beds = '1 king 1 queen'
         occupency = 4
         cost = 129
         name = 'Captains Quarters Apartment'
+
+        avail['8'] = 'unavailable' 
+
         return cost
     else:
         return 'Invalid room number'
+ 
 
-
+    #def close_reservation():
+    #close = input(f'What room would you like to close? ')
+    #if room == '1':
+        
 
 
 
@@ -93,6 +123,8 @@ def main():
     reservations = 0
     proceed = ''
     while proceed != 'N':
+        for key, value in avail.items():
+            print(f'Room Number {key} is {value}')
         checkin, checkout, stay = date()
         print(checkin)
         print(checkout)
