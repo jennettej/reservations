@@ -1,12 +1,17 @@
-# Search functions.
+# ReservationSearch.py
+# Author: Wesley Murray II
 # Search thru reservation entries.
-# Most searches are brute because sorting & keeping sorts
-# might be too much weight
-# However, we could probably keep it sorted under
-# one attribute, specifically whatever property is "most important"
+# Could possibly make a sorting function if we
+# want to make searching by a specific dictionary property
+# more efficient
 
 class ReservationSearch:
     def searchByProperty(arr,propertyName,check):
+        # arr represents a list of dictionaries.
+
+        # For each item in array,
+        # see if the property we're searching for exists
+        # and then compare it to the check variable.
         for i in arr:
             if (propertyName in i) and (i[propertyName]==check):
                 return i
@@ -15,7 +20,7 @@ class ReservationSearch:
 
 
 if __name__=="__main__":
-    print("Testing murray.py; search functions.")
+    print("Testing ReservationSearch.py; search functions.")
     # Test array using fake data. Might not be final layout of data.
     testArr = [
         {
