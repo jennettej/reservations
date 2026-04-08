@@ -9,8 +9,8 @@ Starter Script
 Description:
     TODO: Describe what this program/module is supposed to do.
     TODO: Hand avail info to JSON / database / longterm storage
-    TODO: Change miller.py or avalibility.py
-
+    TODO: Change miller.py or avalibility.py formating for DD-MM-YYYY or DD/MM/YYYY formating
+    TODO: Change stay value to int from datetime object
 
 
 """
