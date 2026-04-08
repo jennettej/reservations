@@ -16,10 +16,80 @@ checkout_object = ''
 
 
 def date():
+
     '''Asks user what day you want your reservation to be on'''
-    checkin = input('Please enter your check in date (MM/DD/YYYY): ')
-    checkout = input('Please enter your checkout date (MM/DD/YYYY): ')
-    stay = int(input('How many days would you like to stay for? '))
+    while True:
+        checkin = input('Please enter your check in date (MM/DD/YYYY): ')
+
+        try:
+            if len(checkin) != 10 or checkin[2] != '/' or checkin[5] != '/':
+                raise ValueError(f'Error: Must be in format: MM/DD/YYYY')
+                continue
+
+            inmonth = int(checkin[0:2])
+            inday = int(checkin[3:5])
+            inyear = int(checkin[6:10])
+
+            if not (1 <= inmonth <= 12):
+                raise ValueError(f'Month must be a number between 1 and 12')
+                continue
+
+            if not (1 <= inday <= 31):
+                raise ValueError(f'Month must be a number between 1 and 31')
+                continue
+
+            break
+
+        except ValueError as e:
+            print(f'Error: {e}')
+
+        except Exception:
+            print('An unexpected error has occured')
+    while True:
+        checkout = input('Please enter your checkout date (MM/DD/YYYY): ')
+            
+        try:
+            if len(checkout) != 10 or checkout[2] != '/' or checkout[5] != '/':
+                raise ValueError(f'Error: Must be in format: MM/DD/YYYY')
+                continue
+
+            outmonth = int(checkout[0:2])
+            outday = int(checkout[3:5])
+            outyear = int(checkout[6:10])
+
+            if not (1 <= outmonth <= 12):
+                raise ValueError(f'Month must be a number between 1 and 12')
+                continue
+
+            if not (1 <= outday <= 31):
+                raise ValueError(f'Month must be a number between 1 and 31')
+                continue
+
+            break
+
+        except ValueError as e:
+            print(f'Error: {e}')
+
+        except Exception:
+            print('An unexpected error has occured')
+    while True:
+        
+        try:
+            stay = int(input('How many days would you like to stay for? '))
+            break
+        
+        except ValueError as e:
+            print('Must be an integer')
+            continue
+        except Exception:
+            print('An unexpected error has occured')
+            continue
+
+
+        
+
+
+
     #checkin_object = datetime.strptime(checkin, '%m/%d/%Y')
     #checkout_object = datetime.strptime(checkout, '%m/%d/%Y')
     return checkin, checkout, stay
