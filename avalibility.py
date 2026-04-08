@@ -1,4 +1,5 @@
 #from datetime import datetime
+import miller   # Need function to change string to datetime.date object
 
 #Ready to commit
 """
@@ -7,6 +8,8 @@ Starter Script
 
 Description:
     TODO: Describe what this program/module is supposed to do.
+    TODO: hand avail info to JSON / database / longterm storage
+    TODO: Fix infinite while loop in date() when user 
 
 
 """
@@ -19,8 +22,8 @@ def date():
 
     '''Asks user what day you want your reservation to be on'''
     while True:
-        checkin = input('Please enter your check in date (MM/DD/YYYY): ')
-
+        checkin = miller.mmddyyyy_to_date(input('Please enter your check in date (MM/DD/YYYY): '))
+        print(checkin)
         try:
             if len(checkin) != 10 or checkin[2] != '/' or checkin[5] != '/':
                 raise ValueError(f'Error: Must be in format: MM/DD/YYYY')
