@@ -18,6 +18,11 @@ avail = {'1': 'available', '2': 'available', '3': 'available', '4': 'available',
 checkin_object = ''
 checkout_object = ''
 
+def enter_name():
+    first_name = input('Please enter the first name of the guest: ')
+    last_name = input('Please enter the last name of the guest: ')
+
+
 
 def date():
 
@@ -62,13 +67,14 @@ def date():
 
 def room():
     '''Asks user what room they want to reserve'''
+
     room_request = input('What room would you like to reserve?(1-8)  ')
-    
+
     if room_request == '1':
         beds = '1 full'
         occupency = 2
         cost = 77
-        name = 'Sea Oat Sweet'
+        name = 'Sea Oat Suite'
 
         avail['1'] = 'unavailable'
 
@@ -77,7 +83,7 @@ def room():
         beds = '2 full'
         occupency = 4
         cost = 85
-        name = 'Shipwreck Sweet'
+        name = 'Shipwreck Suite'
 
         avail['2'] = 'unavailable' 
 
@@ -86,7 +92,7 @@ def room():
         beds = '2 full'
         occupency = 4
         cost = 85
-        name = 'Shady Oak Sweet'
+        name = 'Shady Oak Suite'
 
         avail['3'] = 'unavailable' 
 
@@ -95,7 +101,7 @@ def room():
         beds = '1 queen'
         occupency = 2
         cost = 97
-        name = 'Sunset Sweet'
+        name = 'Sunset Suite'
 
         avail['4'] = 'unavailable'
 
@@ -104,7 +110,7 @@ def room():
         beds = '1 queen'
         occupency = 2
         cost = 97
-        name = 'Shelling Sweet'
+        name = 'Shelling Suite'
 
         avail['5'] = 'unavailable' 
 
@@ -113,7 +119,7 @@ def room():
         beds = '1 queen'
         occupency = 2
         cost = 97
-        name = 'Skipper Sweet'
+        name = 'Skipper Suite'
 
         avail['6'] = 'unavailable'
 
@@ -133,17 +139,18 @@ def room():
         cost = 129
         name = 'Captains Quarters Apartment'
 
-        avail['8'] = 'unavailable' 
+        avail['8'] = 'unavailable'
 
         return cost
     else:
         return 'Invalid room number'
- 
 
-    #def close_reservation():
-    #close = input(f'What room would you like to close? ')
-    #if room == '1':
         
+
+        #def close_reservation():
+        #close = input(f'What room would you like to close? ')
+        #if room == '1':
+            
 
 
 
