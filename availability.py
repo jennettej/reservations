@@ -19,6 +19,11 @@ checkin_object = ''
 checkout_object = ''
 
 def enter_name():
+    '''
+    -Asks user to input the guest name. Will keep asking until parameters are met. 
+    -Only letters and the hyphen and apostrophe symbols are allowed. 
+    -Spaces are allowed.
+    '''
     is_accepted = 'false'
     while is_accepted == 'false':
         first_name = input('Please enter the first name of the guest: ')
@@ -174,6 +179,7 @@ def main():
     while proceed != 'N' and proceed != 'n':
         for key, value in avail.items():
             print(f'Room Number {key} is {value}')
+        name = enter_name()
         checkin, checkout, stay = date()
         print(miller.date_to_mmddyyyy(checkin))
         print(miller.date_to_mmddyyyy(checkout))
@@ -181,6 +187,7 @@ def main():
         print(f'${cost}')
         reservations += 1
         print(reservations)
+        print(f'Name: {name} \n Checkin Date: {checkin} \n Checkout Date: {checkout} \n Stay Length: {stay}')
         proceed = input('Do you wish to proceed? (Press any button to continue, or N to stop) ') 
 
     # TODO: Implement program logic here
