@@ -181,13 +181,12 @@ def main():
             print(f'Room Number {key} is {value}')
         name = enter_name()
         checkin, checkout, stay = date()
-        print(miller.date_to_mmddyyyy(checkin))
-        print(miller.date_to_mmddyyyy(checkout))
-        cost = (room() * stay)
-        print(f'${cost}')
+        #print(miller.date_to_mmddyyyy(checkin))
+        #print(miller.date_to_mmddyyyy(checkout))
+        cost = (room() * stay.days)
         reservations += 1
         print(reservations)
-        print(f'Name: {name} \n Checkin Date: {checkin} \n Checkout Date: {checkout} \n Stay Length: {stay}')
+        print(f'Name: {name} \n Checkin Date: {miller.date_to_mmddyyyy(checkin)} \n Checkout Date: {miller.date_to_mmddyyyy(checkout)} \n Stay Length: {stay.days} days \n Total Cost: ${cost}')
         proceed = input('Do you wish to proceed? (Press any button to continue, or N to stop) ') 
 
     # TODO: Implement program logic here
