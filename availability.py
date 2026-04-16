@@ -14,8 +14,6 @@ program calculates things like total costs, length of stay, and number
 of reservations put in per loop.
 """
 avail = {'1': 'available', '2': 'available', '3': 'available', '4': 'available', '5': 'available', '6': 'available', '7': 'available', '8': 'available'}
-checkin_object = ''
-checkout_object = ''
 
 def enter_name():
     '''
