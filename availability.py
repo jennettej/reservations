@@ -3,16 +3,15 @@ import miller   # Need function to change string to datetime.date object
 
 #Ready to commit
 """
+---------------------------------------------------------------
 SENG 201 - Term Project
-Starter Script
-
-Description:
-    TODO: Describe what this program/module is supposed to do.
-    TODO: Hand avail info to JSON / database / longterm storage
-    TODO: Change miller.py or avalibility.py formating for DD-MM-YYYY or DD/MM/YYYY formating
-    TODO: Change stay value to int from datetime object
-
-
+---------------------------------------------------------------
+This program avilability.py is a reservation input program to
+identify the name of the guest, the date of there stay and there
+date that they are leaving. It also asks for room number which is
+holds information about prices, capacity, room name, and beds. This
+program calculates things like total costs, length of stay, and number
+of reservations put in per loop.
 """
 avail = {'1': 'available', '2': 'available', '3': 'available', '4': 'available', '5': 'available', '6': 'available', '7': 'available', '8': 'available'}
 checkin_object = ''
@@ -181,8 +180,6 @@ def main():
             print(f'Room Number {key} is {value}')
         name = enter_name()
         checkin, checkout, stay = date()
-        #print(miller.date_to_mmddyyyy(checkin))
-        #print(miller.date_to_mmddyyyy(checkout))
         cost = (room() * stay.days)
         reservations += 1
         print(reservations)
