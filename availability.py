@@ -28,7 +28,7 @@ def enter_name():
         last_name = input('Please enter the last name of the guest: ')
         for char in first_name:
             if not char.isalpha():
-                if char != "'" and char != "=" and char != " ":
+                if char != "'" and char != "-" and char != " ":
                     print('Invalid name: name should be a letter and only hyphens and apostrophes are allowed')
                     continue
         is_accepted = 'true'
