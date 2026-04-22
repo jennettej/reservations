@@ -1,1 +1,16 @@
-{"name": "e", "date": "r", "length": "t", "guests": "y"}
+[{
+  lastName: "Miller",
+  firstName: "Jonathan",
+  confirmationNumber: 33527738,
+  roomNumber: 330,
+  arrivalDate: "04-06-2026",
+  leaveDate: "04-10-2026"
+},
+{
+  lastName: "Murray",
+  firstName: "Wesley",
+  confirmationNumber: 73940274,
+  roomNumber: 331,
+  arrivalDate: "04-26-2037",
+  leaveDate: "04-30-2037"
+}]
