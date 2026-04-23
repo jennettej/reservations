@@ -1,22 +1,39 @@
 #from datetime import datetime
 import miller   # Need function to change string to datetime.date object
 
+
 #Ready to commit
 """
+---------------------------------------------------------------
 SENG 201 - Term Project
-Starter Script
-
-Description:
-    TODO: Describe what this program/module is supposed to do.
-    TODO: Hand avail info to JSON / database / longterm storage
-    TODO: Change miller.py or avalibility.py formating for DD-MM-YYYY or DD/MM/YYYY formating
-    TODO: Change stay value to int from datetime object
-
-
+---------------------------------------------------------------
+This program avilability.py is a reservation input program to
+identify the name of the guest, the date of there stay and there
+date that they are leaving. It also asks for room number which is
+holds information about prices, capacity, room name, and beds. This
+program calculates things like total costs, length of stay, and number
+of reservations put in per loop.
 """
 avail = {'1': 'available', '2': 'available', '3': 'available', '4': 'available', '5': 'available', '6': 'available', '7': 'available', '8': 'available'}
-checkin_object = ''
-checkout_object = ''
+
+def enter_name():
+    '''
+    -Asks user to input the guest name. Will keep asking until parameters are met. 
+    -Only letters and the hyphen and apostrophe symbols are allowed. 
+    -Spaces are allowed.
+    '''
+    is_accepted = 'false'
+    while is_accepted == 'false':
+        first_name = input('Please enter the first name of the guest: ')
+        last_name = input('Please enter the last name of the guest: ')
+        for char in first_name:
+            if not char.isalpha():
+                if char != "'" and char != "-" and char != " ":
+                    print('Invalid name: name should be a letter and only hyphens and apostrophes are allowed')
+                    continue
+        is_accepted = 'true'
+    full_name = f'{first_name} {last_name}'
+    return full_name
 
 
 def date():
@@ -62,13 +79,14 @@ def date():
 
 def room():
     '''Asks user what room they want to reserve'''
+
     room_request = input('What room would you like to reserve?(1-8)  ')
-    
+
     if room_request == '1':
         beds = '1 full'
         occupency = 2
         cost = 77
-        name = 'Sea Oat Sweet'
+        name = 'Sea Oat Suite'
 
         avail['1'] = 'unavailable'
 
@@ -77,7 +95,7 @@ def room():
         beds = '2 full'
         occupency = 4
         cost = 85
-        name = 'Shipwreck Sweet'
+        name = 'Shipwreck Suite'
 
         avail['2'] = 'unavailable' 
 
@@ -86,7 +104,7 @@ def room():
         beds = '2 full'
         occupency = 4
         cost = 85
-        name = 'Shady Oak Sweet'
+        name = 'Shady Oak Suite'
 
         avail['3'] = 'unavailable' 
 
@@ -95,7 +113,7 @@ def room():
         beds = '1 queen'
         occupency = 2
         cost = 97
-        name = 'Sunset Sweet'
+        name = 'Sunset Suite'
 
         avail['4'] = 'unavailable'
 
@@ -104,7 +122,7 @@ def room():
         beds = '1 queen'
         occupency = 2
         cost = 97
-        name = 'Shelling Sweet'
+        name = 'Shelling Suite'
 
         avail['5'] = 'unavailable' 
 
@@ -113,7 +131,7 @@ def room():
         beds = '1 queen'
         occupency = 2
         cost = 97
-        name = 'Skipper Sweet'
+        name = 'Skipper Suite'
 
         avail['6'] = 'unavailable'
 
@@ -133,17 +151,18 @@ def room():
         cost = 129
         name = 'Captains Quarters Apartment'
 
-        avail['8'] = 'unavailable' 
+        avail['8'] = 'unavailable'
 
         return cost
     else:
         return 'Invalid room number'
- 
 
-    #def close_reservation():
-    #close = input(f'What room would you like to close? ')
-    #if room == '1':
         
+
+        #def close_reservation():
+        #close = input(f'What room would you like to close? ')
+        #if room == '1':
+            
 
 
 
@@ -158,13 +177,12 @@ def main():
     while proceed != 'N' and proceed != 'n':
         for key, value in avail.items():
             print(f'Room Number {key} is {value}')
+        name = enter_name()
         checkin, checkout, stay = date()
-        print(miller.date_to_mmddyyyy(checkin))
-        print(miller.date_to_mmddyyyy(checkout))
-        cost = (room() * stay)
-        print(f'${cost}')
+        cost = (room() * stay.days)
         reservations += 1
         print(reservations)
+        print(f'Name: {name} \n Checkin Date: {miller.date_to_mmddyyyy(checkin)} \n Checkout Date: {miller.date_to_mmddyyyy(checkout)} \n Stay Length: {stay.days} days \n Total Cost: ${cost}')
         proceed = input('Do you wish to proceed? (Press any button to continue, or N to stop) ') 
 
     # TODO: Implement program logic here
