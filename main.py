@@ -12,9 +12,12 @@ Description:
 """
 import os
 import datetime
+import json
+from data import load_reservations, save_reservations
 from garris import check_availability, validate_date
+from ReservationSearch import ReservationSearch
 
-RESERVATIONS_FILE = 'reservations.txt'
+RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
 
 
@@ -32,9 +35,8 @@ class Welcome_Screen:
         print("For Housekeeping, Enter: hskp")
         print("For Clerk Services, Enter: cksv" + '\n')
 
-        login_info = input("Enter Login Passkey Here: ")
-
         while True:
+            login_info = input("Enter Login Passkey Here: ")
 
             # These if statements take in a "key" that determines which of the three avaliable
             # menus the program will run next.
@@ -84,45 +86,32 @@ class Clerk_Services:
         print("|   7    | 1 Queen        |     2     |   $97   | Salt Marsh                  |")
         print("|   8    | 1 King 1 Queen |     4     |   $129  | Captains Quarters Apartment |")
 
-    def read_reservations(self, filename):
+    def read_reservations(self):
         """
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        print("Below is a list of current reservations:" + '\n')
-        if not os.path.exists(filename):
-            # Checks if the file exists
-            return "No reservations found - file does not exist"
+        res = load_reservations(self.filename)
+        if not res:
+            return "No reservations found"
+        for r in res:
+            print(r)
+        return ""
 
-        if os.path.getsize(filename) == 0:
-            # Checks if the file is empty
-            return "No reservations found - file is empty"
-
-        with open(filename, 'r') as file:
-            # Reads the information in the file
-            reservations = file.read().strip()
-
-        return reservations
-
-    def add_reservation(self, filename):
+    def add_reservation(self):
         """
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
         """
-        print('\n' + "If you would like to create a reservation, do so here. If not enter 'skip'.")
-        reservation_info = input('\n' + "Add reservation here: ")
-
-        if reservation_info == 'skip':
-            # Allows for the user to skip adding a reservation
-            return "Skipping Reservation Creation"
-
-        else:
-
-            with open(self.filename, 'a') as file:
-                # Adds a reservation to the file
-                file.write('\n' + reservation_info)
-
-            return "Reservation Added Successfully!"
+        print("Enter guest details (name, arrival MM/DD/YYYY, leave MM/DD/YYYY, room):")
+        name = input("Name: ")
+        arrival = validate_date(input("Arrival: "))
+        leave = validate_date(input("Leave: "))
+        room = int(input("Room (1-8): "))
+        res = load_reservations(self.filename)
+        res.append({"name": name, "arrival": arrival.strftime("%m/%d/%Y"), "leave": leave.strftime("%m/%d/%Y"), "room": room})
+        save_reservations(res, self.filename)
+        return "Reservation added and saved."
 
 
 class Hotel_Management:
@@ -139,27 +128,19 @@ class Hotel_Management:
         print("..." + '\n' + ".." + '\n' + "." + '\n')
         return "Welcome to the Hotel Management Menu..."
 
-    def read_reservations(self, filename):
+    def read_reservations(self):
         """
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        print('\n' + "Below is a list of current reservations:" + '\n')
-        if not os.path.exists(filename):
-            # Checks if the file exists
-            return "No reservations found - file does not exist"
+        res = load_reservations(self.filename)
+        if not res:
+            return "No reservations found"
+        for r in res:
+            print(r)
+        return ""
 
-        if os.path.getsize(filename) == 0:
-            # Checks if the file is empty
-            return "No reservations found - file is empty"
-
-        with open(filename, 'r') as file:
-            # Reads the information in the file
-            reservations = file.read().strip()
-
-        return reservations
-
-    def add_reservation(self, filename):
+    def add_reservation(self):
         """
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
@@ -168,7 +149,7 @@ class Hotel_Management:
         reservation_info = input('\n' + "Add reservation here: ")
 
         if reservation_info == 'skip':
-            # Allows the user to skip adding a reservation
+            # Allows for the user to skip adding a reservation
             return "Skipping Reservation Creation"
 
         else:
@@ -309,13 +290,13 @@ def main():
     next_class = welcome.welcome_screen()
     if isinstance(next_class, Clerk_Services):
         next_class.welcome()
-        print(next_class.read_reservations(RESERVATIONS_FILE))
-        print(next_class.add_reservation(RESERVATIONS_FILE))
+        print(next_class.read_reservations())
+        print(next_class.add_reservation())
 
     elif isinstance(next_class, Hotel_Management):
         print(next_class.welcome())
-        print(next_class.read_reservations(RESERVATIONS_FILE))
-        print(next_class.add_reservation(RESERVATIONS_FILE))
+        print(next_class.read_reservations())
+        print(next_class.add_reservation())
 
     elif isinstance(next_class, Housekeeping):
         print(next_class.welcome())
