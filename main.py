@@ -18,6 +18,7 @@ from garris import check_availability, validate_date
 from ReservationSearch import ReservationSearch
 
 RESERVATIONS_FILE = 'reservations.json'
+ROOM_STATUS_FILE = 'room_status.txt'
 
 
 
@@ -34,9 +35,8 @@ class Welcome_Screen:
         print("For Housekeeping, Enter: hskp")
         print("For Clerk Services, Enter: cksv" + '\n')
 
-        login_info = input("Enter Login Passkey Here: ")
-
         while True:
+            login_info = input("Enter Login Passkey Here: ")
 
             # These if statements take in a "key" that determines which of the three avaliable
             # menus the program will run next.
@@ -135,12 +135,10 @@ class Hotel_Management:
         """
         res = load_reservations(self.filename)
         if not res:
-            return "No reservations found - file does not exist"
-
-        if os.path.getsize(self.filename) == 0:
-            return "No reservations found - file is empty"
-
-        return res
+            return "No reservations found"
+        for r in res:
+            print(r)
+        return ""
 
     def add_reservation(self):
         """
@@ -292,13 +290,13 @@ def main():
     next_class = welcome.welcome_screen()
     if isinstance(next_class, Clerk_Services):
         next_class.welcome()
-        print(next_class.read_reservations(RESERVATIONS_FILE))
-        print(next_class.add_reservation(RESERVATIONS_FILE))
+        print(next_class.read_reservations())
+        print(next_class.add_reservation())
 
     elif isinstance(next_class, Hotel_Management):
         print(next_class.welcome())
-        print(next_class.read_reservations(RESERVATIONS_FILE))
-        print(next_class.add_reservation(RESERVATIONS_FILE))
+        print(next_class.read_reservations())
+        print(next_class.add_reservation())
 
     elif isinstance(next_class, Housekeeping):
         print(next_class.welcome())
