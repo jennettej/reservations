@@ -13,6 +13,7 @@ Description:
 import os
 import datetime
 from garris import check_availability, validate_date
+import availability 
 
 RESERVATIONS_FILE = 'reservations.txt'
 ROOM_STATUS_FILE = 'room_status.txt'
@@ -110,14 +111,14 @@ class Clerk_Services:
         the reservation is added to the list of the other current reservations.
         """
         print('\n' + "If you would like to create a reservation, do so here. If not enter 'skip'.")
-        reservation_info = input('\n' + "Add reservation here: ")
+        choice = input("Choice:  ").lower()
 
-        if reservation_info == 'skip':
+        if choice == 'skip':
             # Allows for the user to skip adding a reservation
             return "Skipping Reservation Creation"
 
         else:
-
+            reservation_info = availability.run_reservaion()
             with open(self.filename, 'a') as file:
                 # Adds a reservation to the file
                 file.write('\n' + reservation_info)
@@ -165,14 +166,14 @@ class Hotel_Management:
         the reservation is added to the list of the other current reservations.
         """
         print('\n' + "If you would like to create a reservation, do so here. If not enter 'skip'.")
-        reservation_info = input('\n' + "Add reservation here: ")
+        choice = input('Choice: ').lower()
 
-        if reservation_info == 'skip':
+        if choice == 'skip':
             # Allows the user to skip adding a reservation
             return "Skipping Reservation Creation"
 
         else:
-
+            reservation_info = availability.run_reservation()
             with open(self.filename, 'a') as file:
                 # Adds a reservation to the file
                 file.write('\n' + reservation_info)
