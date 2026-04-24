@@ -176,9 +176,10 @@ def run_reservation():
     '''Runs reservation one time and returns a string of the ouputs'''
     name = enter_name()
     checkin, checkout, stay = date()
-    cost = (room() * stay.days)
+    cost_per, room_number = room()
+    cost = (cost_per * stay.days)
 
-    return f'Name: {name} \n Checkin: {miller.date_to_mmddyyyy(checkin)} \n Checkout: {miller.date_to_mmddyyyy(checkout)} \n Stay: {stay} \n Total Cost: {cost} \n \n'
+    return f'Name: {name} \nCheckin: {miller.date_to_mmddyyyy(checkin)} \nCheckout: {miller.date_to_mmddyyyy(checkout)} \nStay: {stay} \nTotal Cost: ${cost} \n \n'
 
 
 
