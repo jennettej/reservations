@@ -31,34 +31,40 @@ class Welcome_Screen:
         """
         print("Welcome to _______'s Room Reservation System" + '\n')
         print("Please Enter Your Positions Login to Access the Correct Menu." + '\n')
-        print("For Hotel Management, Enter: htmn")
-        print("For Housekeeping, Enter: hskp")
-        print("For Clerk Services, Enter: cksv" + '\n')
+        print("For Hotel [M]anagement, Enter: m")
+        print("For [H]ousekeeping, Enter: h")
+        print("For [C]lerk Services, Enter: c")
+        print("To [Q]uit, Enter: q" + '\n')
 
         while True:
-            login_info = input("Enter Login Passkey Here: ")
+            login_info = input("Enter option here: ")
 
             # These if statements take in a "key" that determines which of the three avaliable
             # menus the program will run next.
 
-            if login_info == 'htmn':
-                print('\n' + "Login Successful! Entering the Hotel Management Menu System...")
+            if login_info == 'm' or login_info == 'M':
+                print('\n' + "Entering the Hotel Management Menu System...")
                 next_class = Hotel_Management(RESERVATIONS_FILE) 
                 return next_class
 
-            elif login_info == 'hskp':
-                print('\n' + "Login Successful! Entering the Housekeeping Management Menu System...")
+            elif login_info == 'h' or login_info == 'H':
+                print('\n' + "Entering the Housekeeping Management Menu System...")
                 next_class = Housekeeping(ROOM_STATUS_FILE)
                 return next_class
 
-            elif login_info == 'cksv':
-                print('\n' + "Login Successful! Entering into the Clerk Services Management Menu System...")
+            elif login_info == 'c' or login_info == 'C':
+                print('\n' + "Entering into the Clerk Services Management Menu System...")
                 next_class = Clerk_Services(RESERVATIONS_FILE)
                 return next_class
 
+            elif login_info == 'q' or login_info =='Q':
+                print('\n' + "Closing program ...")
+                next_class = 'quit'
+                return next_class
 
             else:
                 print('\n' + "Login Requirements Not Met, Please Try Again.")
+                print("Enter Hotel [M]anagement, [H]ousekeeping, [C]lerk Services, or [Q]uit" + '\n')
 
 
 class Clerk_Services:
@@ -145,10 +151,10 @@ class Hotel_Management:
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
         """
-        print('\n' + "If you would like to create a reservation, do so here. If not enter 'skip'.")
+        print('\n' + "If you would like to create a reservation, do so here. If not enter 's' to [s]kip'.")
         reservation_info = input('\n' + "Add reservation here: ")
 
-        if reservation_info == 'skip':
+        if reservation_info == 'skip' or reservation_info == 's' or reservation_info == 'S':
             # Allows for the user to skip adding a reservation
             return "Skipping Reservation Creation"
 
@@ -303,6 +309,8 @@ def main():
         print(next_class.room_status(ROOM_STATUS_FILE))
         next_class.view_occupied_rooms(RESERVATIONS_FILE)
         print(next_class.update_room_status())
+    elif next_class == "quit":
+        exit
 
 
 if __name__ == "__main__":
