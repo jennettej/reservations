@@ -15,6 +15,7 @@ import datetime
 import json
 from data import load_reservations, save_reservations
 from garris import check_availability, validate_date
+import availability 
 from ReservationSearch import ReservationSearch
 
 RESERVATIONS_FILE = 'reservations.json'
@@ -159,7 +160,7 @@ class Hotel_Management:
             return "Skipping Reservation Creation"
 
         else:
-
+            reservation_info = availability.run_reservation()
             with open(self.filename, 'a') as file:
                 # Adds a reservation to the file
                 file.write('\n' + reservation_info)
