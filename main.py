@@ -207,39 +207,25 @@ class Housekeeping:
 
     def view_occupied_rooms(self, reservations_filename):
         """
-        The view_occupied_rooms function loads reservations from a CSV file and uses
+        The view_occupied_rooms function loads reservations from the JSON file and uses
         check_availability from garris.py to determine which rooms are currently
         occupied or vacant based on today's date.
-
-        The reservations file is expected to have lines in the format:
-            room_number,checkin,checkout
-        Example:
-            1,01/15/2026,04/20/2026
         """
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
 
-        # Load reservations from file into a list of dicts
+        raw = load_reservations(reservations_filename)
         reservations = []
-        if os.path.exists(reservations_filename) and os.path.getsize(reservations_filename) > 0:
-            with open(reservations_filename, 'r') as file:
-                for line in file:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    parts = line.split(',')
-                    if len(parts) != 3:
-                        continue
-                    try:
-                        reservations.append({
-                            'room_number': int(parts[0]),
-                            'checkin': validate_date(parts[1]),
-                            'checkout': validate_date(parts[2])
-                        })
-                    except ValueError:
-                        continue
+        for r in raw:
+            try:
+                reservations.append({
+                    'room_number': int(r['roomNumber']),
+                    'checkin': datetime.datetime.strptime(r['arrivalDate'], "%m-%d-%Y").date(),
+                    'checkout': datetime.datetime.strptime(r['leaveDate'], "%m-%d-%Y").date()
+                })
+            except (KeyError, ValueError):
+                continue
 
-        # Check each room against today's date using check_availability
         print('\n' + "Room Occupancy Status for " + str(today) + ":" + '\n')
         for room_num in range(1, 9):
             available = check_availability(room_num, today, tomorrow, reservations)
@@ -284,6 +270,7 @@ class Housekeeping:
                 file.writelines(lines)
 
             print(f"Room {room_num} status updated to '{new_status}'.")
+            print('\n' + "Updated room statuses:" + '\n' + ''.join(lines))
 
 
 
