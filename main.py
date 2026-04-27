@@ -12,10 +12,13 @@ Description:
 """
 import os
 import datetime
+import json
+from data import load_reservations, save_reservations
 from garris import check_availability, validate_date
 import availability 
+from ReservationSearch import ReservationSearch
 
-RESERVATIONS_FILE = 'reservations.txt'
+RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
 
 
@@ -29,35 +32,40 @@ class Welcome_Screen:
         """
         print("Welcome to _______'s Room Reservation System" + '\n')
         print("Please Enter Your Positions Login to Access the Correct Menu." + '\n')
-        print("For Hotel Management, Enter: htmn")
-        print("For Housekeeping, Enter: hskp")
-        print("For Clerk Services, Enter: cksv" + '\n')
-
-        login_info = input("Enter Login Passkey Here: ")
+        print("For Hotel [M]anagement, Enter: m")
+        print("For [H]ousekeeping, Enter: h")
+        print("For [C]lerk Services, Enter: c")
+        print("To [Q]uit, Enter: q" + '\n')
 
         while True:
+            login_info = input("Enter option here: ")
 
             # These if statements take in a "key" that determines which of the three avaliable
             # menus the program will run next.
 
-            if login_info == 'htmn':
-                print('\n' + "Login Successful! Entering the Hotel Management Menu System...")
+            if login_info == 'm' or login_info == 'M':
+                print('\n' + "Entering the Hotel Management Menu System...")
                 next_class = Hotel_Management(RESERVATIONS_FILE) 
                 return next_class
 
-            elif login_info == 'hskp':
-                print('\n' + "Login Successful! Entering the Housekeeping Management Menu System...")
+            elif login_info == 'h' or login_info == 'H':
+                print('\n' + "Entering the Housekeeping Management Menu System...")
                 next_class = Housekeeping(ROOM_STATUS_FILE)
                 return next_class
 
-            elif login_info == 'cksv':
-                print('\n' + "Login Successful! Entering into the Clerk Services Management Menu System...")
+            elif login_info == 'c' or login_info == 'C':
+                print('\n' + "Entering into the Clerk Services Management Menu System...")
                 next_class = Clerk_Services(RESERVATIONS_FILE)
                 return next_class
 
+            elif login_info == 'q' or login_info =='Q':
+                print('\n' + "Closing program ...")
+                next_class = 'quit'
+                return next_class
 
             else:
                 print('\n' + "Login Requirements Not Met, Please Try Again.")
+                print("Enter Hotel [M]anagement, [H]ousekeeping, [C]lerk Services, or [Q]uit" + '\n')
 
 
 class Clerk_Services:
@@ -85,45 +93,32 @@ class Clerk_Services:
         print("|   7    | 1 Queen        |     2     |   $97   | Salt Marsh                  |")
         print("|   8    | 1 King 1 Queen |     4     |   $129  | Captains Quarters Apartment |")
 
-    def read_reservations(self, filename):
+    def read_reservations(self):
         """
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        print("Below is a list of current reservations:" + '\n')
-        if not os.path.exists(filename):
-            # Checks if the file exists
-            return "No reservations found - file does not exist"
+        res = load_reservations(self.filename)
+        if not res:
+            return "No reservations found"
+        for r in res:
+            print(r)
+        return ""
 
-        if os.path.getsize(filename) == 0:
-            # Checks if the file is empty
-            return "No reservations found - file is empty"
-
-        with open(filename, 'r') as file:
-            # Reads the information in the file
-            reservations = file.read().strip()
-
-        return reservations
-
-    def add_reservation(self, filename):
+    def add_reservation(self):
         """
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
         """
-        print('\n' + "If you would like to create a reservation, do so here. If not enter 'skip'.")
-        choice = input("Choice:  ").lower()
-
-        if choice == 'skip':
-            # Allows for the user to skip adding a reservation
-            return "Skipping Reservation Creation"
-
-        else:
-            reservation_info = availability.run_reservaion()
-            with open(self.filename, 'a') as file:
-                # Adds a reservation to the file
-                file.write('\n' + reservation_info)
-
-            return "Reservation Added Successfully!"
+        print("Enter guest details (name, arrival MM/DD/YYYY, leave MM/DD/YYYY, room):")
+        name = input("Name: ")
+        arrival = validate_date(input("Arrival: "))
+        leave = validate_date(input("Leave: "))
+        room = int(input("Room (1-8): "))
+        res = load_reservations(self.filename)
+        res.append({"name": name, "arrival": arrival.strftime("%m/%d/%Y"), "leave": leave.strftime("%m/%d/%Y"), "room": room})
+        save_reservations(res, self.filename)
+        return "Reservation added and saved."
 
 
 class Hotel_Management:
@@ -140,36 +135,28 @@ class Hotel_Management:
         print("..." + '\n' + ".." + '\n' + "." + '\n')
         return "Welcome to the Hotel Management Menu..."
 
-    def read_reservations(self, filename):
+    def read_reservations(self):
         """
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        print('\n' + "Below is a list of current reservations:" + '\n')
-        if not os.path.exists(filename):
-            # Checks if the file exists
-            return "No reservations found - file does not exist"
+        res = load_reservations(self.filename)
+        if not res:
+            return "No reservations found"
+        for r in res:
+            print(r)
+        return ""
 
-        if os.path.getsize(filename) == 0:
-            # Checks if the file is empty
-            return "No reservations found - file is empty"
-
-        with open(filename, 'r') as file:
-            # Reads the information in the file
-            reservations = file.read().strip()
-
-        return reservations
-
-    def add_reservation(self, filename):
+    def add_reservation(self):
         """
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
         """
-        print('\n' + "If you would like to create a reservation, do so here. If not enter 'skip'.")
-        choice = input('Choice: ').lower()
+        print('\n' + "If you would like to create a reservation, do so here. If not enter 's' to [s]kip'.")
+        reservation_info = input('\n' + "Add reservation here: ")
 
-        if choice == 'skip':
-            # Allows the user to skip adding a reservation
+        if reservation_info == 'skip' or reservation_info == 's' or reservation_info == 'S':
+            # Allows for the user to skip adding a reservation
             return "Skipping Reservation Creation"
 
         else:
@@ -310,19 +297,21 @@ def main():
     next_class = welcome.welcome_screen()
     if isinstance(next_class, Clerk_Services):
         next_class.welcome()
-        print(next_class.read_reservations(RESERVATIONS_FILE))
-        print(next_class.add_reservation(RESERVATIONS_FILE))
+        print(next_class.read_reservations())
+        print(next_class.add_reservation())
 
     elif isinstance(next_class, Hotel_Management):
         print(next_class.welcome())
-        print(next_class.read_reservations(RESERVATIONS_FILE))
-        print(next_class.add_reservation(RESERVATIONS_FILE))
+        print(next_class.read_reservations())
+        print(next_class.add_reservation())
 
     elif isinstance(next_class, Housekeeping):
         print(next_class.welcome())
         print(next_class.room_status(ROOM_STATUS_FILE))
         next_class.view_occupied_rooms(RESERVATIONS_FILE)
         print(next_class.update_room_status())
+    elif next_class == "quit":
+        exit
 
 
 if __name__ == "__main__":

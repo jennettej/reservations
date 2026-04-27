@@ -20,19 +20,12 @@ def date_to_mmddyyyy(date):
     '''
     return date.strftime("%m-%d-%Y")
 
-def main():
+def close_reservation(reservations, confirmation_number):
     '''
-    Main function to test and showcase the date conversion functions. No other use.
+    Remove a reservation by confirmation number.
+    Modifies list in place.
     '''
-    test1_input = "06-01-2024"
-    test2_input = "08-07-2024"
-
-    test_date = mmddyyyy_to_date(test1_input)
-    test2_date = mmddyyyy_to_date(test2_input)
-
-    print(date_to_mmddyyyy(test_date))
-    print(date_to_mmddyyyy(test2_date))
-
+    reservations[:] = [r for r in reservations if r.get('confirmationNumber') != confirmation_number]
 
 if __name__ == "__main__":
     main()
