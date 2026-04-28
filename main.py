@@ -17,7 +17,7 @@ from data import load_reservations, save_reservations
 from garris import check_availability, validate_date
 import availability 
 from ReservationSearch import ReservationSearch
-from edit import edit_res, read_reservations
+from edit import edit_reservation as edit_res, read_reservations, validate_name
 
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
@@ -107,14 +107,20 @@ class Clerk_Services:
         the reservation is added to the list of the other current reservations.
         """
         print("Enter guest details (name, arrival MM/DD/YYYY, leave MM/DD/YYYY, room):")
-        name = input("Name: ")
-        arrival = validate_date(input("Arrival: "))
-        leave = validate_date(input("Leave: "))
-        room = int(input("Room (1-8): "))
-        res = load_reservations(self.filename)
-        res.append({"name": name, "arrival": arrival.strftime("%m/%d/%Y"), "leave": leave.strftime("%m/%d/%Y"), "room": room})
-        save_reservations(res, self.filename)
-        return "Reservation added and saved."
+        try:
+            name = validate_name(input("Name: "))
+            arrival = validate_date(input("Arrival: "))
+            leave = validate_date(input("Leave: "))
+            room = int(input("Room (1-8): "))
+            res = load_reservations(self.filename)
+            res.append({"name": name, "arrival": arrival.strftime("%m/%d/%Y"), "leave": leave.strftime("%m/%d/%Y"),
+                        "room": room})
+            save_reservations(res, self.filename)
+            return "Reservation added and saved."
+        except ValueError as err:
+            print(err)
+            return "Reservation not added."
+
 
     def edit_reservation(self):
         """

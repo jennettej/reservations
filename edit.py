@@ -1,10 +1,9 @@
-import json
-
+import re
 from data import load_reservations, save_reservations
 from garris import validate_date
 
 
-def edit_res(self):
+def edit_reservation(self):
 	"""
 	Gives a list of current reservations and prompts the user if they want to edit one.
 	Allows changing aspects of reservations.
@@ -28,17 +27,17 @@ def edit_res(self):
 				user_in = input("\nChange [R]oom #, [C]onfirmation number, [A]rrival date, [D]eparture date, [L]ast name, [F]irst name, or [Q]uit: ")
 				if user_in.lower() == 'q':
 					print ("No changes made.")
-				if user_in.lower() == 'r':
+				elif user_in.lower() == 'r':
 					user_in = input("New room number: ").strip()
 					try:
 						val = int(user_in)
-						if val < 1 or val > 10:
+						if val < 1 or val > 9:
 							raise ValueError
 						res.update({"roomNumber": val})
 						save_reservations(reservations)
 					except ValueError:
-						print("Room number must be an integer between 1 and 9.")
-				if user_in.lower() == 'c':
+						print("Room number must be an integer between 1 and 8.")
+				elif user_in.lower() == 'c':
 					user_in = input("New confirmation number: ").strip()
 					try:
 						val = int(user_in)
@@ -48,39 +47,41 @@ def edit_res(self):
 						save_reservations(reservations)
 					except ValueError:
 						print("Confirmation number must be a positive integer.")
-				if user_in.lower() == 'a':
+				elif user_in.lower() == 'a':
 					user_in = input("New arrival date: ").strip()
 					try:
 						val = validate_date(user_in)
 						res.update({"arrivalDate": val})
 						save_reservations(reservations)
-					except ValueError:
-						print("")
-				if user_in.lower() == 'd':
+					except ValueError as err:
+						print(err)
+				elif user_in.lower() == 'd':
 					user_in = input("New departure date: ").strip()
 					try:
 						val = validate_date(user_in)
 						res.update({"leaveDate": val})
 						save_reservations(reservations)
-					except ValueError:
-						print("")
-				if user_in.lower() == 'l':
+					except ValueError as err:
+						print(err)
+				elif user_in.lower() == 'l':
 					user_in = input("New last name: ").strip()
 					try:
 						val = user_in
+						validate_name(val)
 						res.update({"lastName": val})
 						save_reservations(reservations)
 					except ValueError:
-						print("")
-				if user_in.lower() == 'f':
+						print("Please enter a valid last name. (Capital first letter, up to one - or '.)")
+				elif user_in.lower() == 'f':
 					user_in = input("New first name: ").strip()
 					try:
 						val = user_in
+						validate_name(val)
 						res.update({"firstName": val})
 						save_reservations(reservations)
 					except ValueError:
-						print("")
-				if user_in.lower() == 'q':
+						print("Please enter a valid first name. (Capital first letter, up to one - or '.)")
+				elif user_in.lower() == 'q':
 					return ""
 
 
@@ -109,3 +110,11 @@ def read_reservation(reservation):
 	      "|", arrival_date, " " * (11 - len(arrival_date)),
 	      "|", leave_date, " " * (13 - len(leave_date)),
 	      "|", name, " " * (20 - len(name)), "|")
+
+def validate_name(name):
+	try:
+		if not re.fullmatch(r"[A-Z][A-Za-z]*'?[A-Za-z]*-?[A-Za-z]+", name):
+			raise ValueError("Input a valid name.")
+		return name
+	except ValueError:
+		raise
