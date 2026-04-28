@@ -101,8 +101,19 @@ class Clerk_Services:
         res = load_reservations(self.filename)
         if not res:
             return "No reservations found"
+
+        print("\n| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
         for r in res:
-            print(r)
+            r_num = str(r['roomNumber'])
+            conf_num = str(r['confirmationNumber'])
+            arr_date = r['arrivalDate']
+            lv_date = r['leaveDate']
+            name = r['lastName'] + ", " + r['firstName']
+            print("|", r_num, " "*(5-len(r_num)),
+                  "|", conf_num, " " * (9 - len(conf_num)),
+                  "|", arr_date, " " * (11 - len(arr_date)),
+                  "|", lv_date, " " * (13 - len(lv_date)),
+                  "|", name, " " * (20 - len(name)), "|")
         return ""
 
     def add_reservation(self):
@@ -143,8 +154,19 @@ class Hotel_Management:
         res = load_reservations(self.filename)
         if not res:
             return "No reservations found"
+
+        print("\n| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
         for r in res:
-            print(r)
+            r_num = str(r['roomNumber'])
+            conf_num = str(r['confirmationNumber'])
+            arr_date = r['arrivalDate']
+            lv_date = r['leaveDate']
+            name = r['lastName'] + ", " + r['firstName']
+            print("|", r_num, " "*(5-len(r_num)),
+                  "|", conf_num, " " * (9 - len(conf_num)),
+                  "|", arr_date, " " * (11 - len(arr_date)),
+                  "|", lv_date, " " * (13 - len(lv_date)),
+                  "|", name, " " * (20 - len(name)), "|")
         return ""
 
     def add_reservation(self):
