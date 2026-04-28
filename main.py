@@ -17,6 +17,7 @@ from data import load_reservations, save_reservations
 from garris import check_availability, validate_date
 import availability 
 from ReservationSearch import ReservationSearch
+from edit import edit_res, read_reservations
 
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
@@ -98,23 +99,7 @@ class Clerk_Services:
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        res = load_reservations(self.filename)
-        if not res:
-            return "No reservations found"
-
-        print("\n| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
-        for r in res:
-            r_num = str(r['roomNumber'])
-            conf_num = str(r['confirmationNumber'])
-            arr_date = r['arrivalDate']
-            lv_date = r['leaveDate']
-            name = r['lastName'] + ", " + r['firstName']
-            print("|", r_num, " "*(5-len(r_num)),
-                  "|", conf_num, " " * (9 - len(conf_num)),
-                  "|", arr_date, " " * (11 - len(arr_date)),
-                  "|", lv_date, " " * (13 - len(lv_date)),
-                  "|", name, " " * (20 - len(name)), "|")
-        return ""
+        read_reservations(self)
 
     def add_reservation(self):
         """
@@ -130,6 +115,13 @@ class Clerk_Services:
         res.append({"name": name, "arrival": arrival.strftime("%m/%d/%Y"), "leave": leave.strftime("%m/%d/%Y"), "room": room})
         save_reservations(res, self.filename)
         return "Reservation added and saved."
+
+    def edit_reservation(self):
+        """
+        Gives a list of current reservations and prompts the user if they want to edit one.
+        Allows changing aspects of reservations.
+        """
+        return edit_res(self)
 
 
 class Hotel_Management:
@@ -151,23 +143,7 @@ class Hotel_Management:
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        res = load_reservations(self.filename)
-        if not res:
-            return "No reservations found"
-
-        print("\n| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
-        for r in res:
-            r_num = str(r['roomNumber'])
-            conf_num = str(r['confirmationNumber'])
-            arr_date = r['arrivalDate']
-            lv_date = r['leaveDate']
-            name = r['lastName'] + ", " + r['firstName']
-            print("|", r_num, " "*(5-len(r_num)),
-                  "|", conf_num, " " * (9 - len(conf_num)),
-                  "|", arr_date, " " * (11 - len(arr_date)),
-                  "|", lv_date, " " * (13 - len(lv_date)),
-                  "|", name, " " * (20 - len(name)), "|")
-        return ""
+        read_reservations(self)
 
     def add_reservation(self):
         """
@@ -310,7 +286,7 @@ def main():
     next_class = welcome.welcome_screen()
     if isinstance(next_class, Clerk_Services):
         next_class.welcome()
-        print(next_class.read_reservations())
+        print(next_class.edit_reservation())
         print(next_class.add_reservation())
 
     elif isinstance(next_class, Hotel_Management):
