@@ -15,9 +15,8 @@ import datetime
 import json
 from data import load_reservations, save_reservations
 from garris import check_availability, validate_date
-import availability 
 from ReservationSearch import ReservationSearch
-from edit import edit_reservation as edit_res, read_reservations, validate_name
+from edit import edit_reservation as edit_res, read_reservations as read_res, validate_name
 
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
@@ -61,7 +60,7 @@ class Welcome_Screen:
 
             elif login_info == 'q' or login_info =='Q':
                 print('\n' + "Closing program ...")
-                next_class = 'quit'
+                next_class = "quit"
                 return next_class
 
             else:
@@ -99,7 +98,7 @@ class Clerk_Services:
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        read_reservations(self)
+        return read_res(self)
 
     def add_reservation(self):
         """
@@ -121,13 +120,33 @@ class Clerk_Services:
             print(err)
             return "Reservation not added."
 
-
     def edit_reservation(self):
         """
         Gives a list of current reservations and prompts the user if they want to edit one.
         Allows changing aspects of reservations.
         """
         return edit_res(self)
+    
+    def class_option(self):
+        '''
+        Asks user option to book a reservation, show reservations, quit, show menu, or exit user.
+        '''
+        while True:
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [Q]uit program, [E]xit user: ")
+            if option == "B" or option == "b":
+                return "book"
+            elif option == 'S' or option == 's':
+                return "show"
+            elif option == 'C' or option == 'c':
+                return "change"
+            elif option == 'Q' or option == 'q':
+                return "quit"
+            elif option == 'E' or option == 'e':
+                return "exit"
+            elif option == 'M' or option == 'm':
+                return "menu"
+            else:
+                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'Q' to quit, or 'E' to exit")
 
 
 class Hotel_Management:
@@ -149,7 +168,7 @@ class Hotel_Management:
         The read_reservations function takes in a file, determines if it exists and
         returns the reservations currently housed inside the file if there are any.
         """
-        read_reservations(self)
+        return read_res(self)
 
     def add_reservation(self):
         """
@@ -164,12 +183,39 @@ class Hotel_Management:
             return "Skipping Reservation Creation"
 
         else:
-            reservation_info = availability.run_reservation()
+
             with open(self.filename, 'a') as file:
                 # Adds a reservation to the file
                 file.write('\n' + reservation_info)
 
             return "Reservation Added Successfully!"
+
+    def edit_reservation(self):
+        """
+        Gives a list of current reservations and prompts the user if they want to edit one.
+        Allows changing aspects of reservations.
+        """
+        return edit_res(self)
+    
+    def class_option(self):
+        '''
+        Asks user option to read reservations, book reservations, quit, or exit user.
+        '''
+        while True:
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [Q]uit program, [E]xit user: ")
+            if option == "B" or option == "b":
+                return "book"
+            elif option == 'S' or option == 's':
+                return "show"
+            elif option == 'C' or option == 'c':
+                return "change"
+            elif option == 'Q' or option == 'q':
+                return "quit"
+            elif option == 'E' or option == 'e':
+                return "exit"
+            else:
+                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'Q' to quit, or 'E' to exit")        
+
 
 class Housekeeping:
     def __init__(self, filename):
@@ -212,72 +258,96 @@ class Housekeeping:
 
     def view_occupied_rooms(self, reservations_filename):
         """
-        The view_occupied_rooms function loads reservations from the JSON file and uses
+        The view_occupied_rooms function loads reservations from a CSV file and uses
         check_availability from garris.py to determine which rooms are currently
         occupied or vacant based on today's date.
+
+        The reservations file is expected to have lines in the format:
+            room_number,checkin,checkout
+        Example:
+            1,01/15/2026,04/20/2026
         """
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
 
-        raw = load_reservations(reservations_filename)
+        # Load reservations from file into a list of dicts
         reservations = []
-        for r in raw:
-            try:
-                reservations.append({
-                    'room_number': int(r['roomNumber']),
-                    'checkin': datetime.datetime.strptime(r['arrivalDate'], "%m-%d-%Y").date(),
-                    'checkout': datetime.datetime.strptime(r['leaveDate'], "%m-%d-%Y").date()
-                })
-            except (KeyError, ValueError):
-                continue
+        if os.path.exists(reservations_filename) and os.path.getsize(reservations_filename) > 0:
+            with open(reservations_filename, 'r') as file:
+                for line in file:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    parts = line.split(',')
+                    if len(parts) != 3:
+                        continue
+                    try:
+                        reservations.append({
+                            'room_number': int(parts[0]),
+                            'checkin': validate_date(parts[1]),
+                            'checkout': validate_date(parts[2])
+                        })
+                    except ValueError:
+                        continue
 
+        # Check each room against today's date using check_availability
         print('\n' + "Room Occupancy Status for " + str(today) + ":" + '\n')
         for room_num in range(1, 9):
             available = check_availability(room_num, today, tomorrow, reservations)
             status = "Vacant" if available else "Occupied"
-            print(f"Room {room_num}: {status}")
+            print(f"  Room {room_num}: {status}")
 
     def update_room_status(self):
         """
-        The update_room_status function loops, prompting the housekeeper to select
-        a room and set its cleanliness status to either 'clean' or 'dirty'. The
-        change is saved back to room_status.txt. Enter 'q' to quit the loop.
+        The update_room_status function prompts the housekeeper to select a room
+        and set its cleanliness status to either 'clean' or 'dirty'. The change
+        is saved back to room_status.txt.
         """
+        print('\n' + "Enter the room number to update (1-8), or 'skip' to exit: ")
+        choice = input("Room number: ").strip()
+
+        if choice == 'skip':
+            return "No changes made."
+
+        if not choice.isdigit() or int(choice) not in range(1, 9):
+            return "Invalid room number. Please enter a number between 1 and 8."
+
+        room_num = int(choice)
+
+        new_status = input("Enter new status ('clean' or 'dirty'): ").strip().lower()
+        if new_status not in ('clean', 'dirty'):
+            return "Invalid status. Please enter 'clean' or 'dirty'."
+
+        # Read all lines, update the matching room, write back
+        with open(self.filename, 'r') as file:
+            lines = file.readlines()
+
+        for i, line in enumerate(lines):
+            if line.startswith(f"Room {room_num}:"):
+                lines[i] = f"Room {room_num}: {new_status}\n"
+                break
+
+        with open(self.filename, 'w') as file:
+            file.writelines(lines)
+
+        return f"Room {room_num} status updated to '{new_status}'."
+
+    def class_option(self):
+        '''
+        Asks user option to read reservations, book reservations, quit, or exit user.
+        '''
         while True:
-            print('\n' + "Enter the room number to update (1-8), or 'q' to quit: ")
-            choice = input("Room number: ").strip()
-
-            if choice.lower() == 'q':
-                print("Exiting room status update.")
-                return
-
-            if not choice.isdigit() or int(choice) not in range(1, 9):
-                print("Invalid room number. Please enter a number between 1 and 8.")
-                continue
-
-            room_num = int(choice)
-
-            new_status = input("Enter new status ('clean' or 'dirty'): ").strip().lower()
-            if new_status not in ('clean', 'dirty'):
-                print("Invalid status. Please enter 'clean' or 'dirty'.")
-                continue
-
-            # Read all lines, update the matching room, write back
-            with open(self.filename, 'r') as file:
-                lines = file.readlines()
-
-            for i, line in enumerate(lines):
-                if line.startswith(f"Room {room_num}:"):
-                    lines[i] = f"Room {room_num}: {new_status}\n"
-                    break
-
-            with open(self.filename, 'w') as file:
-                file.writelines(lines)
-
-            print(f"Room {room_num} status updated to '{new_status}'.")
-            print('\n' + "Updated room statuses:" + '\n' + ''.join(lines))
-
-
+            option = input("View room [S]tatus, view [O]ccupied rooms, [Q]uit program, [E]xit user: ")
+            if option == "S" or option == "s":
+                return "status"
+            elif option == 'O' or option == 'o':
+                return "occupied"
+            elif option == 'Q' or option == 'q':
+                return "quit"
+            elif option == 'E' or option == 'e':
+                return "exit"
+            else:
+                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'Q' to quit, or 'E' to exit")        
 
 
 
@@ -289,25 +359,71 @@ def main():
     Runs the program.
     """
     welcome = Welcome_Screen()
-    next_class = welcome.welcome_screen()
-    if isinstance(next_class, Clerk_Services):
-        next_class.welcome()
-        print(next_class.edit_reservation())
-        print(next_class.add_reservation())
+    continue_flag = True
+    while continue_flag:    # Main loop containing user select options, and user loops
+        next_class = welcome.welcome_screen() # Select Clerk, Managment, or Housekeeping
+        class_option = "continue"
 
-    elif isinstance(next_class, Hotel_Management):
-        print(next_class.welcome())
-        print(next_class.read_reservations())
-        print(next_class.add_reservation())
+        # print(next_class)
 
-    elif isinstance(next_class, Housekeeping):
-        print(next_class.welcome())
-        print(next_class.room_status(ROOM_STATUS_FILE))
-        next_class.view_occupied_rooms(RESERVATIONS_FILE)
-        next_class.update_room_status()
-    elif next_class == "quit":
-        exit()
+        if next_class == "quit":
+            continue_flag = False
+
+        if isinstance(next_class, Clerk_Services):
+            next_class.welcome()
+
+            while class_option != "exit" and class_option != "quit": # Service Clerk loop
+                
+                class_option = next_class.class_option()
+                
+                if class_option == "quit":
+                    continue_flag = False
+                elif class_option == "book":
+                    print(next_class.add_reservation())
+                elif class_option == "show":
+                    print(next_class.read_reservations())
+                elif class_option == "change":
+                    print(next_class.edit_reservation())
+                elif class_option == "menu":
+                    next_class.welcome()
+            class_option = "continue" # Prevents while loop being skipped if Clerk is selected a 2nd time
 
 
+        elif isinstance(next_class, Hotel_Management):
+            print(next_class.welcome())
+
+            while class_option != "exit" and class_option != "quit":
+                class_option = next_class.class_option()
+
+                if class_option == "quit":
+                    continue_flag = False
+                elif class_option == "book":
+                    print(next_class.add_reservation())
+                elif class_option == "change":
+                    print(next_class.edit_reservation())
+                elif class_option == "show":
+                    print(next_class.read_reservations())
+            
+            class_option = "continue" # Prevents while loop being skipped if Hotel Managment is selected a 2nd time
+
+
+        elif isinstance(next_class, Housekeeping):
+            while class_option != "exit" and class_option != "quit":
+                # print(next_class.welcome())
+                # print(next_class.update_room_status())
+                class_option = next_class.class_option()
+                
+                if class_option == "quit":
+                    continue_flag = False
+                elif class_option == "status":
+                    print(next_class.room_status(ROOM_STATUS_FILE))
+                elif class_option == "occupied":
+                    next_class.view_occupied_rooms(RESERVATIONS_FILE)
+            class_option = "continue" # Prevents while loop being skipped if Housekeeping is selected a 2nd time
+
+        
+    
+    print("Program closed")
+    
 if __name__ == "__main__":
     main()
