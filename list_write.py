@@ -16,4 +16,4 @@ def list_write(file1,file2):
   except: #if it doesn't exist
     print("Error: no existing file to write to") #print letting you know it doesn't exist
 
-list_write("reservations.json","list.txt") #FILES DON'T GET CREATED AUTOMATICALLY, I ALREADY FIGURED OUT HOW TO DO THAT IN SAVE_LOAD_FILE
+#list_write("reservations.json","list.txt") (TEST CASE I FORGOT TO DELETE FROM HERE UNTIL NOW)
