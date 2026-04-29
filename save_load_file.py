@@ -4,11 +4,10 @@ import os #https://www.w3schools.com/python/python_file_remove.asp
 def getInput():
 	'''getInput: gets a bunch of inputs from the user and writes them to a file'''
 	try: #if a file already exists
-	  os.remove("reservations.json")  #delete it
-	  print("File exists, deleting...")
+	  f = open("reservations.json","w") #open it
 	except: #if not, do nothing
 	  print("No file exists, creating...")
-	f = open("reservations.json","x") #make a new file
+	  f = open("reservations.json","x") #make a new file
 	v1 = input("Name here: ") #get a list of inputs
 	v2 = input("Arrival date here: ")
 	v3 = input("Stay length here: ")
