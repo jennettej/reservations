@@ -22,5 +22,3 @@ def getInput():
 	print(y)
 	f.write(y) #write the json to the file
 	f.close() #close the file
-
-getInput()
