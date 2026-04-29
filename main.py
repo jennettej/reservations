@@ -19,7 +19,7 @@ import availability
 import save_load_file
 import list_write
 from ReservationSearch import ReservationSearch
-from edit import edit_reservation as edit_res, read_reservations as read_res, validate_name
+from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res, validate_name
 
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
@@ -179,20 +179,7 @@ class Hotel_Management:
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
         """
-        print('\n' + "If you would like to create a reservation, do so here. If not enter 's' to [s]kip'.")
-        reservation_info = input('\n' + "Add reservation here: ")
-
-        if reservation_info == 'skip' or reservation_info == 's' or reservation_info == 'S':
-            # Allows for the user to skip adding a reservation
-            return "Skipping Reservation Creation"
-
-        else:
-            reservation_info = availability.run_reservation()
-            with open(self.filename, 'a') as file:
-                # Adds a reservation to the file
-                file.write('\n' + reservation_info)
-
-            return "Reservation Added Successfully!"
+        return add_res(self)
 
     def edit_reservation(self):
         """
