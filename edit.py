@@ -2,7 +2,6 @@
 Contains functions for adding, editing, reading, and validating reservations.
 """
 import re
-from availability import run_reservation
 from data import load_reservations, save_reservations
 from garris import validate_date
 from miller import date_to_mmddyyyy
@@ -10,42 +9,49 @@ from miller import date_to_mmddyyyy
 def add_reservation(self):
 	"""
 	Adds a new reservation to the reservations list.
+	@param self: path of reservations json
+	@return: status message
 	"""
 	while 1:
 		try:
-			reservation_info = prompt_create_reservation()
+			reservations = load_reservations(self.filename)
+			reservation_info = prompt_create_reservation(reservations)
 			if reservation_info == "":
 				return "Booking cancelled."
-			reservations = load_reservations(self.filename)
 			reservations.append(reservation_info)
 			save_reservations(reservations, self.filename)
 			return "Added reservation successfully."
 		except ValueError as err:
 			return str(err) + "\nReservation not added."
 
-def prompt_create_reservation():
+def prompt_create_reservation(reservations):
+	"""
+	Prompts the user for information to create a new reservation.
+	@param reservations: list of reservations
+	@return: new reservation in json format
+	"""
 	print("Begin booking... [E]xit at any time.")
-	user_in = input("Last name or [E]xit: ").strip()
+	user_in = input("Last name: ").strip()
 	if user_in.lower() == "e":
 		return ""
 	last_name = validate_name(user_in)
-	user_in = input("First name or [E]xit: ").strip()
+	user_in = input("First name: ").strip()
 	if user_in.lower() == "e":
 		return ""
 	first_name = validate_name(user_in)
-	user_in = input("Confirmation number or [E]xit: ").strip()
+	user_in = input("Confirmation number: ").strip()
 	if user_in.lower() == "e":
 		return ""
-	confirmation_number = validate_confirm_num(user_in)
-	user_in = input("Room number or [E]xit: ").strip()
+	confirmation_number = validate_confirm_num(user_in, reservations)
+	user_in = input("Room number: ").strip()
 	if user_in.lower() == "e":
 		return ""
-	room_number = validate_room(user_in)
-	user_in = input("Arrival date or [E]xit: ").strip()
+	room_number = validate_room(user_in, reservations)
+	user_in = input("Arrival date: ").strip()
 	if user_in.lower() == "e":
 		return ""
 	arrival_date = date_to_mmddyyyy(validate_date(user_in))
-	user_in = input("Departure date or [E]xit: ").strip()
+	user_in = input("Departure date: ").strip()
 	if user_in.lower() == "e":
 		return ""
 	leave_date = date_to_mmddyyyy(validate_date(user_in))
@@ -64,6 +70,8 @@ def edit_reservation(self):
 	"""
 	Gives a list of current reservations and prompts the user if they want to edit one.
 	Allows changing individual keys of reservations.
+	@param self: path of reservations json
+	@return: status message
 	"""
 	reservations = load_reservations() # Load the reservation json
 	while 1:
@@ -85,11 +93,11 @@ def edit_reservation(self):
 					# Room input
 					elif user_in.lower() == 'r':
 						# validate_room checks for good input
-						res.update({"roomNumber": validate_room(input("New room number: ").strip())})
+						res.update({"roomNumber": validate_room(input("New room number: ").strip(), reservations)})
 					# Confirmation number input
 					elif user_in.lower() == 'c':
 						# validate_confirm_num checks for good input
-						res.update({"confirmationNumber": validate_confirm_num(input("New confirmation number: ").strip())})
+						res.update({"confirmationNumber": validate_confirm_num(input("New confirmation number: ").strip(), reservations)})
 					# Arrival date input
 					elif user_in.lower() == 'a':
 						# validate_date checks for good input
@@ -114,29 +122,12 @@ def edit_reservation(self):
 				except ValueError as err:
 					print(err)
 
-def validate_room(user_in):
-	try:
-		val = int(user_in)  # Is the input an integer
-		if val < 1 or val > 9:  # Is the input a valid room number
-			raise ValueError
-		return val
-	except ValueError:
-		raise ValueError("Room number must be an integer between 1 and 8.")
-
-def validate_confirm_num(user_in):
-	try:
-		val = int(user_in)  # Is the input an integer
-		if val < 1:  # Input should be non-negative
-			raise ValueError
-		return val
-	except ValueError:
-		raise ValueError("Confirmation number must be a positive integer.")
-
-
 def read_reservations(self):
 	"""
     The read_reservations function takes in a json file, determines if it exists and
     prints the reservations currently housed inside the file if there are any.
+    @param self: path of reservations json
+	@return: status message
     """
 	res = load_reservations(self.filename)
 	if not res:
@@ -150,6 +141,7 @@ def read_reservations(self):
 def read_reservation(reservation):
 	"""
 	Reads and displays a single given reservation.
+	@param reservation: single reservation to display
 	"""
 	reservation_num = str(reservation['roomNumber'])
 	confirmation_num = str(reservation['confirmationNumber'])
@@ -166,10 +158,55 @@ def validate_name(name):
 	"""
 	Validates the given name begins with a capital letter, contains up to one - and/or ' ,
 	otherwise contains only letters, and ends with a letter.
+	@param name: name to validate
+	@return: name if valid
 	"""
 	try:
 		if not re.fullmatch(r"[A-Z][A-Za-z]*'?[A-Za-z]*-?[A-Za-z]+", name):
 			raise ValueError("Please enter a valid name. (Capital first letter, up to one - or '.)")
 		return name
-	except ValueError:
-		raise
+	except ValueError as err:
+		raise err
+
+def validate_confirm_num(confirm_num, reservations):
+	"""
+	Validates confirmation number is a positive integer and is not already in use.
+	@param confirm_num: confirmation number
+	@param reservations: list of reservations
+	@return: confirmation number if valid
+	"""
+	try:
+		try:
+			val = int(confirm_num)  # Is the input an integer
+			if val < 1:  # Input should be non-negative
+				raise ValueError
+		except ValueError:
+			raise ValueError("Confirmation number must be a positive integer.")
+		for res in reservations:
+			if val == res["confirmationNumber"]:
+				raise ValueError("Confirmation number is already in use.")
+		return val
+	except ValueError as err:
+		raise err
+
+def validate_room(room_num, reservations):
+	"""
+	Validates that the room number is between 1 and 8 and that it is not already booked.
+	@param room_num: room number
+	@param reservations: list of reservations
+	@return room number if valid
+	"""
+	try:
+		try:
+			val = int(room_num)  # Is the input an integer
+			if val < 1 or val > 9:  # Is the input a valid room number
+				raise ValueError
+		except ValueError:
+			raise ValueError("Room number must be an integer between 1 and 8.")
+		# Check if room is already booked
+		for res in reservations:
+			if val == res["roomNumber"]:
+				raise ValueError("Room already booked.")
+		return val
+	except ValueError as err:
+		raise err

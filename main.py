@@ -108,20 +108,7 @@ class Clerk_Services:
         The add_reservation function prompts the user to make a new reservation or skip to the next screen,
         the reservation is added to the list of the other current reservations.
         """
-        print("Enter guest details (name, arrival MM/DD/YYYY, leave MM/DD/YYYY, room):")
-        try:
-            name = validate_name(input("Name: "))
-            arrival = validate_date(input("Arrival: "))
-            leave = validate_date(input("Leave: "))
-            room = int(input("Room (1-8): "))
-            res = load_reservations(self.filename)
-            res.append({"name": name, "arrival": arrival.strftime("%m/%d/%Y"), "leave": leave.strftime("%m/%d/%Y"),
-                        "room": room})
-            save_reservations(res, self.filename)
-            return "Reservation added and saved."
-        except ValueError as err:
-            print(err)
-            return "Reservation not added."
+        return add_res(self)
 
     def edit_reservation(self):
         """
