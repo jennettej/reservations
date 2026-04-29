@@ -83,6 +83,7 @@ def room():
     room_request = input('What room would you like to reserve?(1-8)  ')
 
     if room_request == '1':
+        room_number = '1'
         beds = '1 full'
         occupency = 2
         cost = 77
@@ -90,8 +91,9 @@ def room():
 
         avail['1'] = 'unavailable'
 
-        return cost
+        return cost, room_number
     elif room_request =='2':
+        room_number = '2'
         beds = '2 full'
         occupency = 4
         cost = 85
@@ -99,8 +101,9 @@ def room():
 
         avail['2'] = 'unavailable' 
 
-        return cost
+        return cost, room_number
     elif room_request == '3':
+        room_number = '3'
         beds = '2 full'
         occupency = 4
         cost = 85
@@ -108,8 +111,9 @@ def room():
 
         avail['3'] = 'unavailable' 
 
-        return cost
+        return cost, room_number
     elif room_request == '4':
+        room_number = '4'
         beds = '1 queen'
         occupency = 2
         cost = 97
@@ -117,8 +121,9 @@ def room():
 
         avail['4'] = 'unavailable'
 
-        return cost
+        return cost, room_number
     elif room_request == '5':
+        room_number = '5'
         beds = '1 queen'
         occupency = 2
         cost = 97
@@ -128,6 +133,7 @@ def room():
 
         return cost
     elif room_request == '6':
+        room_number = '6'
         beds = '1 queen'
         occupency = 2
         cost = 97
@@ -135,8 +141,9 @@ def room():
 
         avail['6'] = 'unavailable'
 
-        return cost
+        return cost, room_number
     elif room_request == '7':
+        room_number = '7'
         beds = '1 queen'
         occupency = 2
         cost = 97
@@ -144,8 +151,9 @@ def room():
 
         avail['7'] = 'unavailable' 
 
-        return cost
+        return cost, room_number
     elif room_request == '8':
+        room_number = '1'
         beds = '1 king 1 queen'
         occupency = 4
         cost = 129
@@ -153,7 +161,7 @@ def room():
 
         avail['8'] = 'unavailable'
 
-        return cost
+        return cost, room_number
     else:
         return 'Invalid room number'
 
@@ -164,6 +172,14 @@ def room():
         #if room == '1':
             
 
+def run_reservation():
+    '''Runs reservation one time and returns a string of the ouputs'''
+    name = enter_name()
+    checkin, checkout, stay = date()
+    cost_per, room_number = room()
+    cost = (cost_per * stay.days)
+
+    return f'Name: {name} \nCheckin: {miller.date_to_mmddyyyy(checkin)} \nCheckout: {miller.date_to_mmddyyyy(checkout)} \nStay: {stay} \nTotal Cost: ${cost} \n \n'
 
 
 
@@ -179,10 +195,11 @@ def main():
             print(f'Room Number {key} is {value}')
         name = enter_name()
         checkin, checkout, stay = date()
-        cost = (room() * stay.days)
+        cost_per, room = room()
+        total_cost = (cost_per * stay.days)
         reservations += 1
         print(reservations)
-        print(f'Name: {name} \n Checkin Date: {miller.date_to_mmddyyyy(checkin)} \n Checkout Date: {miller.date_to_mmddyyyy(checkout)} \n Stay Length: {stay.days} days \n Total Cost: ${cost}')
+        print(f'Name: {name} \n Checkin Date: {miller.date_to_mmddyyyy(checkin)} \n Checkout Date: {miller.date_to_mmddyyyy(checkout)} \n Stay Length: {stay.days} days \n Total Cost: ${total_cost}')
         proceed = input('Do you wish to proceed? (Press any button to continue, or N to stop) ') 
 
     # TODO: Implement program logic here
