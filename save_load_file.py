@@ -21,10 +21,4 @@ def getInput():
 	y = json.dumps(x) #convert the dictionary to json format
 	print(y)
 	f.write(y) #write the json to the file
-<<<<<<< Updated upstream
 	f.close() #close the file
-
-getInput()
-=======
-	f.close() #close the file
->>>>>>> Stashed changes
