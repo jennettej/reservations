@@ -182,19 +182,27 @@ class Hotel_Management:
         Allows changing aspects of reservations.
         """
         return edit_res(self)
+    
+    def search_reservation(self):
+        """
+        Allows the user to search for a reservation by customer last name.
+        """
+        return search_res(self)
 
     def class_option(self):
         '''
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
                 return "show"
             elif option == 'C' or option == 'c':
                 return "change"
+            elif option == 'F' or option == 'f':
+                return "find"
             elif option == 'Q' or option == 'q':
                 return "quit"
             elif option == 'E' or option == 'e':
@@ -382,6 +390,8 @@ def main():
                     print(next_class.read_reservations())
                 elif class_option == "change":
                     print(next_class.edit_reservation())
+                elif class_option == "find":
+                    print(next_class.search_reservation())
             
             class_option = "continue" # Prevents while loop being skipped if Hotel Managment is selected a 2nd time
 
