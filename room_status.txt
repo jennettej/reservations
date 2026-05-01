@@ -1,0 +1,8 @@
+Room 1: dirty
+Room 2: dirty
+Room 3: clean
+Room 4: clean
+Room 5: clean
+Room 6: clean
+Room 7: clean
+Room 8: clean
