@@ -186,6 +186,7 @@ class Hotel_Management:
     def total_frequency_report(self):
         """Returns a table of all of the months ever reserved along with the number of reservations
         in that given month"""
+        display_frequency_report()
 
     def edit_reservation(self):
         """
@@ -402,9 +403,9 @@ def main():
                 elif class_option == "book":
                     print(next_class.add_reservation())
                 elif class_option == "request":
-                    print(next_class.month_performance_request())
+                    next_class.month_performance_request()
                 elif class_option == "total":
-                    print(next_class.total_frequency_report())
+                    next_class.total_frequency_report()
                 elif class_option == "show":
                     print(next_class.read_reservations())
                 elif class_option == "change":
