@@ -126,7 +126,7 @@ class Clerk_Services:
 
     def class_option(self):
         '''
-        Asks user option to book a reservation, show reservations,Request total report or a specific month, quit, show menu, or exit user.
+        Asks user option to book a reservation, show reservations, quit, show menu, or exit user.
         '''
         while True:
             option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation,[R]equest month report, [T]otal Report [Q]uit program, [E]xit user: ")
@@ -201,7 +201,7 @@ class Hotel_Management:
 
     def class_option(self):
         '''
-        Asks user option to read reservations, book reservations, quit, or exit user.
+        Asks user option to read reservations, book reservations, show reservations, Request total report or a specific month, quit, or exit user.
         '''
         while True:
             option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation, [Q]uit program, [E]xit user: ")
