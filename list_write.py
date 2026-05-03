@@ -14,6 +14,6 @@ def list_write(file1,file2):
    print(str(f3.readlines())) #test print, to make sure it worked
    f3.close() #closes this file too
   except: #if it doesn't exist
-    print("Error: no existing file to write to") #print letting you know it doesn't exist
+    print("Error: no existing file to read from") #print letting you know it doesn't exist
 
 #list_write("reservations.json","list.txt") (TEST CASE I FORGOT TO DELETE FROM HERE UNTIL NOW)

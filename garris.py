@@ -31,7 +31,7 @@ def validate_date(date_str: str):
     except ValueError:
         raise ValueError(f"Invalid date format: {date_str}. Expected MM/DD/YYYY.")
 
-def check_availability(room_number: int, checkin: datetime.date, checkout: datetime.date, reservations):
+def check_availability(room_number: int, checkin: datetime.date, checkout: datetime.date, reservations: list):
     '''
     Check if a room is available for the requested date range.
 
