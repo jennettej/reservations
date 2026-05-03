@@ -1,5 +1,5 @@
-Room 1: clean
-Room 2: clean
+Room 1: dirty
+Room 2: dirty
 Room 3: clean
 Room 4: clean
 Room 5: clean
