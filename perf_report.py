@@ -9,27 +9,34 @@ def performance_report():
         as well as lists the reservations that are being requested."""
 
     res_file = load_reservations()
-    month_request = input(f'What month and year would you like your report from (mm-yyyy)? ')
-    (req_month, req_year) = month_request.split('-')
+    try:
+        month_request = input(f'What month and year would you like your report from (mm-yyyy)? ')
+        (req_month, req_year) = month_request.split('-')
+        if int(req_month) < 1 or int(req_month) > 12 or int(req_year) < 0:
+            raise ValueError
 
-    active_reservations = 0
-    
 
-    for r in res_file:
-        arrival_date = miller.mmddyyyy_to_date(r['arrivalDate'])
-        leave_date = miller.mmddyyyy_to_date(r['leaveDate']) 
+        active_reservations = 0
+        
 
-        if (arrival_date.year, arrival_date.month) <= (int(req_year), int(req_month)) <= (leave_date.year, leave_date.month):
+        for r in res_file:
+            arrival_date = miller.mmddyyyy_to_date(r['arrivalDate'])
+            leave_date = miller.mmddyyyy_to_date(r['leaveDate']) 
 
-            read_reservation(r)
-            active_reservations += 1 
-    if active_reservations == 0:
-        print()
-        print('There are no reservations for this month.')
-    else:
-        print()
-        print(f'Number of reservations: {active_reservations}')
-    return len(res_file), res_file
+            if (arrival_date.year, arrival_date.month) <= (int(req_year), int(req_month)) <= (leave_date.year, leave_date.month):
+
+                read_reservation(r)
+                active_reservations += 1 
+        if active_reservations == 0:
+            print()
+            print('There are no reservations for this month.')
+        else:
+            print()
+            print(f'Number of reservations: {active_reservations}')
+        return len(res_file), res_file
+
+    except:
+        print('Invalid input. Must be in the format mm-yyyy and a valid month and year')
 
 def date_trends():
     """
@@ -84,8 +91,8 @@ def main():
     elif choice == '2':
         display_frequency_report()
 
-
-main()
+if __name__ == "__main__":
+    main()
 
     
 
