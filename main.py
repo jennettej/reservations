@@ -17,9 +17,9 @@ from garris import check_availability
 from ReservationSearch import search_reservation as search_res
 from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res
 from miller import close_reservation_cli as close_res
-
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
+
 
 
 class Welcome_Screen:
@@ -199,18 +199,27 @@ class Hotel_Management:
         """
         return close_res(self)
 
+    def view_reservation_history(self):
+        """
+        Displays all past closed/canceled reservations.
+        """
+        return view_history()
+
     def class_option(self):
         '''
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
+
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [R]ecords, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
                 return "show"
             elif option == 'C' or option == 'c':
                 return "change"
+            elif option == "R" or option == "r":
+                return "records"
             elif option == 'L' or option == 'l':
                 return "close"
             elif option == 'F' or option == 'f':
@@ -396,6 +405,8 @@ def main():
                     print(next_class.read_reservations())
                 elif class_option == "change":
                     print(next_class.edit_reservation())
+                elif class_option == "records":
+                    print(next_class.view_reservation_history())
                 elif class_option == "find":
                     print(next_class.search_reservation())
                 elif class_option == "close":
@@ -409,7 +420,7 @@ def main():
                 # print(next_class.welcome())
                 # print(next_class.update_room_status())
                 class_option = next_class.class_option()
-                
+
                 if class_option == "quit":
                     continue_flag = False
                 elif class_option == "status":
