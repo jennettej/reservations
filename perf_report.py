@@ -1,64 +1,85 @@
 import json
-import datetime 
+import datetime
+import miller
+from data import load_reservations
+from edit import read_reservation 
 
 def performance_report():
-    '''reads the file with the current reservations and returns the number of reservations
-        and also lists the reservations that are currently reported.'''
-    with open('reservations.json', 'r') as filename:
+    """reads the file with the current reservations and returns the number of reservations
+        as well as lists the reservations that are being requested."""
 
-        res_file = json.load(filename)
+    res_file = load_reservations()
+    month_request = input(f'What month and year would you like your report from (mm-yyyy)? ')
+    (req_month, req_year) = month_request.split('-')
 
+    active_reservations = 0
+    
+
+    for r in res_file:
+        arrival_date = miller.mmddyyyy_to_date(r['arrivalDate'])
+        leave_date = miller.mmddyyyy_to_date(r['leaveDate']) 
+
+        if (arrival_date.year, arrival_date.month) <= (int(req_year), int(req_month)) <= (leave_date.year, leave_date.month):
+
+            read_reservation(r)
+            active_reservations += 1 
+    if active_reservations == 0:
+        print()
+        print('There are no reservations for this month.')
+    else:
+        print()
+        print(f'Number of reservations: {active_reservations}')
     return len(res_file), res_file
 
 def date_trends():
-    '''
+    """
     - Creates a list sorted by start month
     - Returns a dictionary where if creats a frequeuncy of how many
       reservations are in each month
     - Frequeuncy increases for every time a reservation includes the same
       date and year
-    '''
-    with open('reservations.json', 'r') as filename:
-        lst = []
-        freq_dic = {}
-        res_file = json.load(filename)
+    """
+    res_file = load_reservations()
+    lst = []
+    freq_dic = {}
 
-        for reservations in res_file:
-            arrivalDate = datetime.datetime.strptime(reservations['arrivalDate'], '%m-%d-%Y').date()
-            leaveDate = datetime.datetime.strptime(reservations['leaveDate'], '%m-%d-%Y').date()
-            lst.append([arrivalDate, leaveDate, (leaveDate - arrivalDate).days])
-        
+    for reservations in res_file:
+        arrival_date = miller.mmddyyyy_to_date(reservations['arrivalDate'])
+        leave_date = miller.mmddyyyy_to_date(reservations['leaveDate'])
+        lst.append([arrival_date, leave_date, (leave_date - arrival_date).days])
+    
 
-            curr_month = arrivalDate.month 
-            curr_year = arrivalDate.year 
-            lst_month = leaveDate.month
-            lst_year = leaveDate.year
+        curr_month = arrival_date.month 
+        curr_year = arrival_date.year 
+        lst_month = leave_date.month
+        lst_year = leave_date.year
 
-            while (curr_year, curr_month) <= (leaveDate.year, leaveDate.month):
-                freq_dic[f'{curr_month}-{curr_year}'] = freq_dic.get(f'{curr_month}-{curr_year}', 0) + 1
-                if curr_month == 12:
-                    curr_year += 1
-                    curr_month = 1
+        while (curr_year, curr_month) <= (lst_year, lst_month):
+            freq_dic[f'{curr_month}-{curr_year}'] = freq_dic.get(f'{curr_month}-{curr_year}', 0) + 1
+            if curr_month == 12:
+                curr_year += 1
+                curr_month = 1
 
-                else:
-                    curr_month += 1
+            else:
+                curr_month += 1
     sorted_lst = sorted(lst, key=lambda x: x[0])
-    return sorted_lst, freq_dic
+    return freq_dic
 
-
+def display_frequency_report():
+    """returns a formatted version of the frequencies of each date-month from date_trends function"""
+    freq_dic = date_trends()
+    print('| Month | Frequency | ')
+    for month in freq_dic:
+        print('|', month, '|', freq_dic[month])
 
 
             
 
 def main():
-    active, reservations = performance_report()
-    print(active)
-    for i in reservations:
-        print(i)
-    sorted_lst, freq_dic = date_trends()
-    print(sorted_lst)
+    performance_report()
     print()
-    print(freq_dic)
+    print()
+    display_frequency_report()
 
 
 main()
