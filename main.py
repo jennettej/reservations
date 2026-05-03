@@ -18,12 +18,12 @@ from garris import check_availability, validate_date
 import availability 
 import save_load_file
 import list_write
-from ReservationSearch import ReservationSearch
+from ReservationSearch import ReservationSearch, search_reservation as search_res
 from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res, validate_name
 from reservation_history import view_history
+from miller import close_reservation_cli as close_res
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
-
 
 
 
@@ -117,19 +117,35 @@ class Clerk_Services:
         Allows changing aspects of reservations.
         """
         return edit_res(self)
+    
+    def search_reservation(self):
+        """
+        Allows the user to search for a reservation by customer last name.
+        """
+        return search_res(self)
+    
+    def close_reservation(self):
+        """
+        Allows the user to close an existing reservation by confirmation number.
+        """
+        return close_res(self)
 
     def class_option(self):
         '''
         Asks user option to book a reservation, show reservations, quit, show menu, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
                 return "show"
             elif option == 'C' or option == 'c':
                 return "change"
+            elif option == 'L' or option == 'l':
+                return "close"
+            elif option == 'F' or option == 'f':
+                return "find"
             elif option == 'Q' or option == 'q':
                 return "quit"
             elif option == 'E' or option == 'e':
@@ -137,7 +153,7 @@ class Clerk_Services:
             elif option == 'M' or option == 'm':
                 return "menu"
             else:
-                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'Q' to quit, or 'E' to exit")
+                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'C' to change reservations, 'F' to fine reservations, 'Q' to quit, or 'E' to exit")
 
 
 
@@ -175,6 +191,18 @@ class Hotel_Management:
         Allows changing aspects of reservations.
         """
         return edit_res(self)
+    
+    def search_reservation(self):
+        """
+        Allows the user to search for a reservation by customer last name.
+        """
+        return search_res(self)
+    
+    def close_reservation(self):
+        """
+        Allows the user to close an existing reservation by confirmation number.
+        """
+        return close_res(self)
 
     def view_reservation_history(self):
         """
@@ -187,7 +215,8 @@ class Hotel_Management:
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [R]ecords, [Q]uit program, [E]xit user: ")
+
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [R]ecords, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
@@ -196,12 +225,16 @@ class Hotel_Management:
                 return "change"
             elif option == "R" or option == "r":
                 return "records"
+            elif option == 'L' or option == 'l':
+                return "close"
+            elif option == 'F' or option == 'f':
+                return "find"
             elif option == 'Q' or option == 'q':
                 return "quit"
             elif option == 'E' or option == 'e':
                 return "exit"
             else:
-                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'Q' to quit, or 'E' to exit")        
+                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'C' to change reservations, 'F' to fine reservations, 'Q' to quit, or 'E' to exit")
 
 
 class Housekeeping:
@@ -252,17 +285,7 @@ class Housekeeping:
         today = datetime.date.today()
         tomorrow = today + datetime.timedelta(days=1)
 
-        raw = load_reservations(reservations_filename)
-        reservations = []
-        for r in raw:
-            try:
-                reservations.append({
-                    'room_number': int(r['roomNumber']),
-                    'checkin': datetime.datetime.strptime(r['arrivalDate'], "%m-%d-%Y").date(),
-                    'checkout': datetime.datetime.strptime(r['leaveDate'], "%m-%d-%Y").date()
-                })
-            except (KeyError, ValueError):
-                continue
+        reservations = load_reservations(reservations_filename)
 
         print('\n' + "Room Occupancy Status for " + str(today) + ":" + '\n')
         for room_num in range(1, 9):
@@ -315,9 +338,11 @@ class Housekeeping:
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("View room [S]tatus, view [O]ccupied rooms, [Q]uit program, [E]xit user: ")
+            option = input("View room [S]how status, [U]pdate status, view [O]ccupied rooms, [Q]uit program, [E]xit user: ")
             if option == "S" or option == "s":
                 return "status"
+            elif option == "U" or option == "u":
+                return "update"
             elif option == 'O' or option == 'o':
                 return "occupied"
             elif option == 'Q' or option == 'q':
@@ -325,7 +350,7 @@ class Housekeeping:
             elif option == 'E' or option == 'e':
                 return "exit"
             else:
-                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'Q' to quit, or 'E' to exit")        
+                print("Invalid option, enter 'S' to show room status, 'U' to update room status, 'O' to view occupied rooms, 'Q' to quit, or 'E' to exit")
 
 
 
@@ -360,8 +385,12 @@ def main():
                     print(next_class.add_reservation())
                 elif class_option == "show":
                     print(next_class.read_reservations())
+                elif class_option == "find":
+                    print(next_class.search_reservation())
                 elif class_option == "change":
                     print(next_class.edit_reservation())
+                elif class_option == "close":
+                    print(next_class.close_reservation())
                 elif class_option == "menu":
                     next_class.welcome()
             class_option = "continue" # Prevents while loop being skipped if Clerk is selected a 2nd time
@@ -383,6 +412,10 @@ def main():
                     print(next_class.edit_reservation())
                 elif class_option == "records":
                     print(next_class.view_reservation_history())
+                elif class_option == "find":
+                    print(next_class.search_reservation())
+                elif class_option == "close":
+                    print(next_class.close_reservation())
             
             class_option = "continue" # Prevents while loop being skipped if Hotel Managment is selected a 2nd time
 
@@ -392,11 +425,13 @@ def main():
                 # print(next_class.welcome())
                 # print(next_class.update_room_status())
                 class_option = next_class.class_option()
-                
+
                 if class_option == "quit":
                     continue_flag = False
                 elif class_option == "status":
                     print(next_class.room_status(ROOM_STATUS_FILE))
+                elif class_option == "update":
+                    next_class.update_room_status()
                 elif class_option == "occupied":
                     next_class.view_occupied_rooms(RESERVATIONS_FILE)
             class_option = "continue" # Prevents while loop being skipped if Housekeeping is selected a 2nd time

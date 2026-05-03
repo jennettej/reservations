@@ -5,6 +5,9 @@
 # want to make searching by a specific dictionary property
 # more efficient
 
+from data import load_reservations, save_reservations
+from edit import read_reservation as read_res
+
 class ReservationSearch:
     def searchByProperty(arr,propertyName,check):
         # arr represents a list of dictionaries.
@@ -17,6 +20,43 @@ class ReservationSearch:
                 return i
         
         return None
+    
+    def caseInsensitiveSearch(arr,propertyName,check):
+        # arr represents a list of dictionaries.
+
+        # For each item in array,
+        # see if the property we're searching for exists
+        # and then compare it to the check variable.
+        # Use the lowercase version of each property.
+        for i in arr:
+            if (propertyName in i) and (i[propertyName].lower()==check.lower()):
+                return i
+        
+        return None
+
+
+def search_reservation(res):
+    """
+    Adds a new reservation to the reservations list.
+    @param res: path of reservations json
+    @return: status message
+    """
+    while 1:
+        try:
+            reservations = load_reservations(res.filename)
+            search_query = input("Input last name: ").strip()
+
+            search_result = ReservationSearch.caseInsensitiveSearch(reservations,"lastName",search_query)
+
+            if search_result is not None:
+                print("Found reservation!")
+                print("| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
+                read_res(search_result)
+                return ""
+            else:
+                return "Could not find reservation."
+        except ValueError as err:
+            return str(err) + "\nWas unable to find a reservation."
 
 
 if __name__=="__main__":
