@@ -20,10 +20,10 @@ import save_load_file
 import list_write
 from ReservationSearch import ReservationSearch, search_reservation as search_res
 from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res, validate_name
+from miller import close_reservation_cli as close_res
 
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
-
 
 
 class Welcome_Screen:
@@ -122,19 +122,27 @@ class Clerk_Services:
         Allows the user to search for a reservation by customer last name.
         """
         return search_res(self)
+    
+    def close_reservation(self):
+        """
+        Allows the user to close an existing reservation by confirmation number.
+        """
+        return close_res(self)
 
     def class_option(self):
         '''
         Asks user option to book a reservation, show reservations, quit, show menu, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
                 return "show"
             elif option == 'C' or option == 'c':
                 return "change"
+            elif option == 'L' or option == 'l':
+                return "close"
             elif option == 'F' or option == 'f':
                 return "find"
             elif option == 'Q' or option == 'q':
@@ -188,19 +196,27 @@ class Hotel_Management:
         Allows the user to search for a reservation by customer last name.
         """
         return search_res(self)
+    
+    def close_reservation(self):
+        """
+        Allows the user to close an existing reservation by confirmation number.
+        """
+        return close_res(self)
 
     def class_option(self):
         '''
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
                 return "show"
             elif option == 'C' or option == 'c':
                 return "change"
+            elif option == 'L' or option == 'l':
+                return "close"
             elif option == 'F' or option == 'f':
                 return "find"
             elif option == 'Q' or option == 'q':
@@ -371,6 +387,8 @@ def main():
                     print(next_class.search_reservation())
                 elif class_option == "change":
                     print(next_class.edit_reservation())
+                elif class_option == "close":
+                    print(next_class.close_reservation())
                 elif class_option == "menu":
                     next_class.welcome()
             class_option = "continue" # Prevents while loop being skipped if Clerk is selected a 2nd time
@@ -392,6 +410,8 @@ def main():
                     print(next_class.edit_reservation())
                 elif class_option == "find":
                     print(next_class.search_reservation())
+                elif class_option == "close":
+                    print(next_class.close_reservation())
             
             class_option = "continue" # Prevents while loop being skipped if Hotel Managment is selected a 2nd time
 
