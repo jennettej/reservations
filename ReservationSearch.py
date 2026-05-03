@@ -12,17 +12,24 @@ class ReservationSearch:
     def searchByProperty(arr,propertyName,check):
         # arr represents a list of dictionaries.
 
+        result = []
+
         # For each item in array,
         # see if the property we're searching for exists
         # and then compare it to the check variable.
         for i in arr:
             if (propertyName in i) and (i[propertyName]==check):
-                return i
+                result.append(i)
+        
+        if len(result)>0:
+            return result
         
         return None
     
     def caseInsensitiveSearch(arr,propertyName,check):
         # arr represents a list of dictionaries.
+
+        result = []
 
         # For each item in array,
         # see if the property we're searching for exists
@@ -30,7 +37,10 @@ class ReservationSearch:
         # Use the lowercase version of each property.
         for i in arr:
             if (propertyName in i) and (i[propertyName].lower()==check.lower()):
-                return i
+                result.append(i)
+        
+        if len(result)>0:
+            return result
         
         return None
 
@@ -46,12 +56,14 @@ def search_reservation(res):
             reservations = load_reservations(res.filename)
             search_query = input("Input last name: ").strip()
 
+            position = 0
             search_result = ReservationSearch.caseInsensitiveSearch(reservations,"lastName",search_query)
 
             if search_result is not None:
                 print("Found reservation!")
                 print("| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
-                read_res(search_result)
+                for i in search_result:
+                    read_res(i)
                 return ""
             else:
                 return "Could not find reservation."
