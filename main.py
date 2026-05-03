@@ -20,6 +20,7 @@ import save_load_file
 import list_write
 from ReservationSearch import ReservationSearch, search_reservation as search_res
 from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res, validate_name
+from perf_report import performance_report, display_frequency_report  
 
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
@@ -204,7 +205,7 @@ class Hotel_Management:
         Asks user option to read reservations, book reservations, show reservations, Request total report or a specific month, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation,[R]equest Month Report, [T]otal Reservation Report [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
