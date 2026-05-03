@@ -7,7 +7,7 @@
 | Clerk: Enter new reservation | Done (add_reservation in edit.py; JSON via data.py) | Braden Salter, Dylan Kelleher, Nick Kulju, team PRs |
 | Clerk: Check out reservation | Done (close_reservation + close_reservation_cli in miller.py; wired in main.py) | Jonathan Miller |
 | Clerk: Search by guest name | Done (ReservationSearch.py + Clerk menu) | Wesley Murray |
-| Clerk: View current reservations | Done (read via edit.py / main.py; data.py) | McKinley Lowery, Jonathan Miller |
+| Clerk: View current reservations | Done (read via edit.py / main.py; data.py) | McKinley Lowery, Jonathan Miller, Nick Kulju |
 | Clerk: Change reservation | Done (edit_reservation in edit.py + Clerk menu) | Team (edit.py PRs) |
 | Manager: Search reservations | Done (same search path as Clerk + Manager menu) | Wesley Murray |
 | Manager: View room availability | Partial (check_availability in garris.py; view_occupied_rooms for housekeeping) | Rush Garris, Holladay Industries |
