@@ -77,7 +77,7 @@ def display_frequency_report():
     freq_dic = date_trends()
     print('| Month  | Frequency | ')
     for month in freq_dic:
-        print('|', month, '|', freq_dic[month], '|')
+        print('|', month, '|', " " * (8 - len(str(freq_dic[month]))), freq_dic[month], '|')
 
     return 
 

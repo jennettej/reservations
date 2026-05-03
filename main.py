@@ -133,7 +133,7 @@ class Clerk_Services:
         Asks user option to book a reservation, show reservations, quit, show menu, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [R]equest month report, [T]otal Report [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
@@ -151,7 +151,7 @@ class Clerk_Services:
             elif option == 'M' or option == 'm':
                 return "menu"
             else:
-                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'C' to change reservations, 'F' to fine reservations, 'Q' to quit, or 'E' to exit")
+                print("Invalid option, enter 'B' to book, 'S' to show reservations, 'C' to change reservations, 'F' to find reservations, 'Q' to quit, or 'E' to exit")
 
 
 
@@ -223,7 +223,7 @@ class Hotel_Management:
         Asks user option to read reservations, book reservations, show reservations, Request total report or a specific month, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [R]ecords, c[L]ose reservation, [F]ind reservation, Request [M]onth Report, [T]otal Reservation Report, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, c[L]ose reservation, [F]ind reservation, [R]ecords, [M]onth Report, [T]otal Reservation Report, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
