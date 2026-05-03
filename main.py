@@ -117,6 +117,7 @@ class Clerk_Services:
         """
         return edit_res(self)
     
+
     def search_reservation(self):
         """
         Allows the user to search for a reservation by customer last name.
@@ -125,10 +126,10 @@ class Clerk_Services:
 
     def class_option(self):
         '''
-        Asks user option to book a reservation, show reservations, quit, show menu, or exit user.
+        Asks user option to book a reservation, show reservations,Request total report or a specific month, quit, show menu, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [F]ind reservation,[R]equest month report, [T]otal Report [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
@@ -176,6 +177,15 @@ class Hotel_Management:
         """
         return add_res(self)
 
+    def month_performance_request(self):
+        """Requests user for the month they would like the report from, and returns the list
+        of reservations in the given month. Also return the total reservtions in the given month."""
+        return performance_report()
+
+    def total_frequency_report(self):
+        """Returns a table of all of the months ever reserved along with the number of reservations
+        in that given month"""
+
     def edit_reservation(self):
         """
         Gives a list of current reservations and prompts the user if they want to edit one.
@@ -203,6 +213,10 @@ class Hotel_Management:
                 return "change"
             elif option == 'F' or option == 'f':
                 return "find"
+            elif option == 'R' or option == 'r':
+                return "request"
+            elif option == 'T' or option == 't':
+                return 'total'
             elif option == 'Q' or option == 'q':
                 return "quit"
             elif option == 'E' or option == 'e':
@@ -386,6 +400,10 @@ def main():
                     continue_flag = False
                 elif class_option == "book":
                     print(next_class.add_reservation())
+                elif class_option == "request":
+                    print(next_class.month_performance_request())
+                elif class_option == "total":
+                    print(next_class.total_frequency_report())
                 elif class_option == "show":
                     print(next_class.read_reservations())
                 elif class_option == "change":
