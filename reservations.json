@@ -1,6 +1,6 @@
 [
   {
-    "lastName": "Miller",
+    "lastName": "James",
     "firstName": "Jonathan",
     "confirmationNumber": 33527738,
     "roomNumber": 1,
@@ -14,6 +14,14 @@
     "roomNumber": 2,
     "arrivalDate": "04-26-2037",
     "leaveDate": "04-30-2037"
+  },
+  {
+    "lastName": "Kent",
+    "firstName": "Clark",
+    "confirmationNumber": 73940274,
+    "roomNumber": 3,
+    "arrivalDate": "04-28-2026",
+    "leaveDate": "05-10-2026"
   },
   {
     "lastName": "Daniels",

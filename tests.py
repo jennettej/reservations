@@ -3,7 +3,6 @@
 # creating, reading, searching, and closing reseravations.
 
 import json
-import datetime
 from data import load_reservations, save_reservations
 from ReservationSearch import ReservationSearch
 from miller import close_reservation

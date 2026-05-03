@@ -1,4 +1,5 @@
 import datetime
+from miller import mmddyyyy_to_date
 #Rush Garris
 
 def days_between(date1:datetime.date, date2:datetime.date) -> int:
@@ -45,7 +46,7 @@ def check_availability(room_number: int, checkin: datetime.date, checkout: datet
     bool: True if the room is available, False if it is already booked.
     '''
     for reservation in reservations:
-        if reservation['room_number'] == room_number:
-            if reservation['checkin'] < checkout and checkin < reservation['checkout']:
+        if reservation['roomNumber'] == room_number:
+            if mmddyyyy_to_date(reservation['arrivalDate']) < checkout and checkin < mmddyyyy_to_date(reservation['leaveDate']):
                 return False
     return True
