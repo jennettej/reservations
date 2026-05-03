@@ -14,5 +14,13 @@
     "roomNumber": 2,
     "arrivalDate": "04-26-2037",
     "leaveDate": "04-30-2037"
+  },
+  {
+    "lastName": "Daniels",
+    "firstName": "Ford",
+    "confirmationNumber": 23987,
+    "roomNumber": 4,
+    "arrivalDate": "04-13-2026",
+    "leaveDate": "07-14-2026"
   }
 ]
