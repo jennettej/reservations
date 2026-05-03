@@ -10,6 +10,15 @@ from edit import read_reservation as read_res
 
 class ReservationSearch:
     def searchByProperty(arr,propertyName,check):
+        """
+        searchByProperty looks through an array of dictionaries to find
+        dictionaries that have a certain value for a certain property.
+        @param arr: an array of properties to search
+        @param propertyName: the name of a dictionary property to search
+        @param check: value to search for
+        @return: array of successful results
+        """
+
         # arr represents a list of dictionaries.
 
         result = []
@@ -27,6 +36,17 @@ class ReservationSearch:
         return None
     
     def caseInsensitiveSearch(arr,propertyName,check):
+        """
+        caseInsensitiveSearch looks through an array of dictionaries to find
+        dictionaries that have a certain value for a certain property.
+        Functions the same as searchByProperty, but the values are
+        sent to lowercase during the search.
+        @param arr: an array of properties to search
+        @param propertyName: the name of a dictionary property to search
+        @param check: value to search for
+        @return: array of successful results
+        """
+        
         # arr represents a list of dictionaries.
 
         result = []
