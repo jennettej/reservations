@@ -11,6 +11,13 @@ def performance_report():
     return len(res_file), res_file
 
 def date_trends():
+    '''
+    - Creates a list sorted by start month
+    - Returns a dictionary where if creats a frequeuncy of how many
+      reservations are in each month
+    - Frequeuncy increases for every time a reservation includes the same
+      date and year
+    '''
     with open('reservations.json', 'r') as filename:
         lst = []
         freq_dic = {}
