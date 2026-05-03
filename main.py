@@ -17,6 +17,8 @@ from garris import check_availability
 from ReservationSearch import search_reservation as search_res
 from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res
 from miller import close_reservation_cli as close_res
+from perf_report import performance_report, display_frequency_report
+from reservation_history import view_history
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
 
