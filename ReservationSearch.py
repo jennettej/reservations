@@ -10,19 +10,46 @@ from edit import read_reservation as read_res
 
 class ReservationSearch:
     def searchByProperty(arr,propertyName,check):
+        """
+        searchByProperty looks through an array of dictionaries to find
+        dictionaries that have a certain value for a certain property.
+        @param arr: an array of properties to search
+        @param propertyName: the name of a dictionary property to search
+        @param check: value to search for
+        @return: array of successful results
+        """
+
         # arr represents a list of dictionaries.
+
+        result = []
 
         # For each item in array,
         # see if the property we're searching for exists
         # and then compare it to the check variable.
         for i in arr:
             if (propertyName in i) and (i[propertyName]==check):
-                return i
+                result.append(i)
+        
+        if len(result)>0:
+            return result
         
         return None
     
     def caseInsensitiveSearch(arr,propertyName,check):
+        """
+        caseInsensitiveSearch looks through an array of dictionaries to find
+        dictionaries that have a certain value for a certain property.
+        Functions the same as searchByProperty, but the values are
+        sent to lowercase during the search.
+        @param arr: an array of properties to search
+        @param propertyName: the name of a dictionary property to search
+        @param check: value to search for
+        @return: array of successful results
+        """
+        
         # arr represents a list of dictionaries.
+
+        result = []
 
         # For each item in array,
         # see if the property we're searching for exists
@@ -30,7 +57,10 @@ class ReservationSearch:
         # Use the lowercase version of each property.
         for i in arr:
             if (propertyName in i) and (i[propertyName].lower()==check.lower()):
-                return i
+                result.append(i)
+        
+        if len(result)>0:
+            return result
         
         return None
 
@@ -46,12 +76,14 @@ def search_reservation(res):
             reservations = load_reservations(res.filename)
             search_query = input("Input last name: ").strip()
 
+            position = 0
             search_result = ReservationSearch.caseInsensitiveSearch(reservations,"lastName",search_query)
 
             if search_result is not None:
                 print("Found reservation!")
                 print("| Room # | Conf. Num. | Arrival Date | Departure Date | Guest Name            |")
-                read_res(search_result)
+                for i in search_result:
+                    read_res(i)
                 return ""
             else:
                 return "Could not find reservation."
