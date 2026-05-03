@@ -1,0 +1,38 @@
+from reservation_history import save_history
+
+demo_history = [
+    {
+        "firstName": "John",
+        "lastName": "Smith",
+        "confirmationNumber": 100001,
+        "roomNumber": 2,
+        "arrivalDate": "04-10-2026",
+        "leaveDate": "04-14-2026",
+        "historyAction": "Checked Out",
+        "historyDate": "04-14-2026"
+    },
+    {
+        "firstName": "Sarah",
+        "lastName": "Johnson",
+        "confirmationNumber": 100002,
+        "roomNumber": 5,
+        "arrivalDate": "04-15-2026",
+        "leaveDate": "04-18-2026",
+        "historyAction": "Canceled",
+        "historyDate": "04-13-2026"
+    },
+    {
+        "firstName": "Michael",
+        "lastName": "Brown",
+        "confirmationNumber": 100003,
+        "roomNumber": 8,
+        "arrivalDate": "04-01-2026",
+        "leaveDate": "04-05-2026",
+        "historyAction": "Checked Out",
+        "historyDate": "04-05-2026"
+    }
+]
+
+save_history(demo_history)
+
+print("Demo reservation history created successfully.")

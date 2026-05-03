@@ -20,9 +20,10 @@ import save_load_file
 import list_write
 from ReservationSearch import ReservationSearch
 from edit import add_reservation as add_res, edit_reservation as edit_res, read_reservations as read_res, validate_name
-
+from reservation_history import view_history
 RESERVATIONS_FILE = 'reservations.json'
 ROOM_STATUS_FILE = 'room_status.txt'
+
 
 
 
@@ -175,18 +176,26 @@ class Hotel_Management:
         """
         return edit_res(self)
 
+    def view_reservation_history(self):
+        """
+        Displays all past closed/canceled reservations.
+        """
+        return view_history()
+
     def class_option(self):
         '''
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [Q]uit program, [E]xit user: ")
+            option = input("[B]ook reservation, [S]how reservations, [C]hange reservations, [R]ecords, [Q]uit program, [E]xit user: ")
             if option == "B" or option == "b":
                 return "book"
             elif option == 'S' or option == 's':
                 return "show"
             elif option == 'C' or option == 'c':
                 return "change"
+            elif option == "R" or option == "r":
+                return "records"
             elif option == 'Q' or option == 'q':
                 return "quit"
             elif option == 'E' or option == 'e':
@@ -372,6 +381,8 @@ def main():
                     print(next_class.read_reservations())
                 elif class_option == "change":
                     print(next_class.edit_reservation())
+                elif class_option == "records":
+                    print(next_class.view_reservation_history())
             
             class_option = "continue" # Prevents while loop being skipped if Hotel Managment is selected a 2nd time
 

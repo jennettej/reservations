@@ -27,5 +27,19 @@ def close_reservation(reservations, confirmation_number):
     '''
     reservations[:] = [r for r in reservations if r.get('confirmationNumber') != confirmation_number]
 
+from reservation_history import add_to_history
+
+def close_reservation(reservations, confirmation_number):
+    """
+    Move a reservation to history, then remove it from current reservations.
+    """
+    for reservation in reservations:
+        if reservation.get("confirmationNumber") == confirmation_number:
+            add_to_history(reservation, "Checked Out")
+            reservations.remove(reservation)
+            return "Reservation closed and moved to history."
+
+    return "Reservation not found."
+
 if __name__ == "__main__":
     main()
