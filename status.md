@@ -4,7 +4,7 @@
 ## Backlog Progress
 | User Story | Status | Contributor(s) |
 |------------|--------|----------------|
-| Clerk: Enter new reservation | Done (add_reservation in edit.py; JSON via data.py) | Braden Salter, Dylan Kelleher, team PRs |
+| Clerk: Enter new reservation | Done (add_reservation in edit.py; JSON via data.py) | Braden Salter, Dylan Kelleher, Nick Kulju, team PRs |
 | Clerk: Check out reservation | Done (close_reservation + close_reservation_cli in miller.py; wired in main.py) | Jonathan Miller |
 | Clerk: Search by guest name | Done (ReservationSearch.py + Clerk menu) | Wesley Murray |
 | Clerk: View current reservations | Done (read via edit.py / main.py; data.py) | McKinley Lowery, Jonathan Miller |
