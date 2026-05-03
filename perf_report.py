@@ -72,14 +72,17 @@ def display_frequency_report():
     for month in freq_dic:
         print('|', month, '|', freq_dic[month])
 
+    return 
+
 
             
 
 def main():
-    performance_report()
-    print()
-    print()
-    display_frequency_report()
+    choice = input('1: Performance Report\n2: Frequency Report\nChoice: ')
+    if choice == '1':
+        performance_report()
+    elif choice == '2':
+        display_frequency_report()
 
 
 main()
