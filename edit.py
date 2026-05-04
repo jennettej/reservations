@@ -199,7 +199,7 @@ def validate_room(room_num, reservations):
 	try:
 		try:
 			val = int(room_num)  # Is the input an integer
-			if val < 1 or val > 9:  # Is the input a valid room number
+			if val < 1 or val > 8:  # Is the input a valid room number
 				raise ValueError
 		except ValueError:
 			raise ValueError("Room number must be an integer between 1 and 8.")
