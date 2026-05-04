@@ -335,7 +335,10 @@ class Housekeeping:
 
             for i, line in enumerate(lines):
                 if line.startswith(f"Room {room_num}:"):
-                    lines[i] = f"Room {room_num}: {new_status}\n"
+                    parts = line.strip().split("| Notes:")
+                    notes = parts[1].strip() if len(parts) > 1 else ""
+
+                    lines[i] = f"Room {room_num}: {new_status} | Notes: {notes}\n"
                     break
 
             with open(self.filename, 'w') as file:
@@ -344,12 +347,51 @@ class Housekeeping:
             print(f"Room {room_num} status updated to '{new_status}'.")
             print('\n' + "Updated room statuses:" + '\n' + ''.join(lines))
 
+    def update_room_notes(self):
+        """
+        Allows the user to add notes to specific rooms
+        """
+        while True:
+            print("\n Enter room number to add/edit notes (1-8) or 'q' to quit: ")
+            choice = input("Room Number: ").strip()
+
+            if choice.lower() == 'q':
+                print("Exiting notes")
+                return
+
+            if not choice.isdigit() or int(choice) not in range(1, 9):
+                print("Invalid room number. Please enter a valid number between 1 and 8.")
+                continue
+
+            room_number = int(choice)
+
+            with open(self.filename, 'r') as file:
+                lines = file.readlines()
+
+            for i, line in enumerate(lines):
+                if line.startswith(f'Room {room_number}:'):
+                    parts = line.strip().split("| Notes:")
+
+                    status = parts[0].split(":")[1].strip()
+
+                    current_notes = parts[1].strip() if len(parts) > 1 else ""
+                    print(f"Current notes: {current_notes or '[No notes]'}")
+
+                    new_notes = input("Enter new notes (or hit enter to delete existing notes): ").strip()
+
+                    lines[i] = f"Room {room_number}: {status} | Notes: {new_notes}\n"
+                    break
+
+            with open(self.filename, 'w') as file:
+                file.writelines(lines)
+            print(f"Notes for Room {room_number} has been updated.")
+
     def class_option(self):
         '''
         Asks user option to read reservations, book reservations, quit, or exit user.
         '''
         while True:
-            option = input("View room [S]how status, [U]pdate status, view [O]ccupied rooms, [Q]uit program, [E]xit user: ")
+            option = input("View room [S]how status, [U]pdate status, view [O]ccupied rooms, add [N]otes, [Q]uit program, [E]xit user: ")
             if option == "S" or option == "s":
                 return "status"
             elif option == "U" or option == "u":
@@ -360,6 +402,8 @@ class Housekeeping:
                 return "quit"
             elif option == 'E' or option == 'e':
                 return "exit"
+            elif option.lower() == 'n':
+                return "notes"
             else:
                 print("Invalid option, enter 'S' to show room status, 'U' to update room status, 'O' to view occupied rooms, 'Q' to quit, or 'E' to exit")
 
@@ -449,6 +493,8 @@ def main():
                     next_class.update_room_status()
                 elif class_option == "occupied":
                     next_class.view_occupied_rooms(RESERVATIONS_FILE)
+                elif class_option == "notes":
+                    next_class.update_room_notes()
             class_option = "continue" # Prevents while loop being skipped if Housekeeping is selected a 2nd time
 
         
